@@ -291,12 +291,12 @@
 <li><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ul>
 <li>插入U盘查看U盘卷名</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsblk<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>使用dd将镜像写入u盘</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dd <span class="keyword">if</span>=~/Documents/resources/archlinux.iso of=/dev/sda</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo dd <span class="hljs-keyword">if</span>=~/Documents/resources/archlinux.iso of=/dev/sda<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>等待写入完成,电脑从U盘启动.<img src="https://i.loli.net/2020/07/15/M6uaOKsbDFq5GZB.png" alt="image-20200714041002649"></li>
@@ -308,13 +308,13 @@
 </ul>
 <h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h3><ol>
 <li><p>查看当前硬盘及挂载情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsblk<br></code></pre></td></tr></table></figure>
 
 <p><img src="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png" alt="image-20200714041219763"></p>
 <p><img src="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png" alt="image-20200714041219763"></p>
 </li>
 <li><p>对目标磁盘进行分区格式化.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cgdisk /dev/sda</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cgdisk /dev/sda<br></code></pre></td></tr></table></figure>
 
 <p>←→键选择new在磁盘sda上创建分区.<br>首先创建boot分区.first sector默认就行,size in sectors 输入+128M,意为创建128M的分区.<img src="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png" alt="image-20200714041443514"></p>
 <p>←→键选择new在磁盘sda上创建分区.<br>首先创建boot分区.first sector默认就行,size in sectors 输入+128M,意为创建128M的分区.<img src="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png" alt="image-20200714041443514"></p>
@@ -324,18 +324,18 @@
 </ol>
 <p>分区完成之后就是这样<br><img src="https://i.loli.net/2020/07/15/UMI2DB4VPywhlnT.png" alt="image-20200714041759703"><br>选择write进行写入.</p>
 <h3 id="硬盘格式化"><a href="#硬盘格式化" class="headerlink" title="硬盘格式化"></a>硬盘格式化</h3><p>使用lsblk查看硬盘挂载情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">lsblk<br></code></pre></td></tr></table></figure>
 
 
 <p>可以看到128M的boot分区名对应着/dev/sda1,/分区对应着/dev/sda1<br><img src="https://i.loli.net/2020/07/15/28fga5DFAuYx7m3.png" alt="image-20200714041928644"></p>
 <ul>
 <li><p>格式化</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mkfs.ext4 /dev/sda2<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.fat -F32 /dev/sda1</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mkfs.fat -F32 /dev/sda1<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>挂载 / 分区到/mnt</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mount /dev/sda2 /mnt<br></code></pre></td></tr></table></figure>
 
 
 </li>
@@ -344,13 +344,13 @@
 <p>文件 <code>/etc/pacman.d/mirrorlist</code> 定义了软件包会从哪个<a href="https://wiki.archlinux.org/index.php/Mirrors" target="_blank" rel="noopener">镜像源</a>下载</p>
 </blockquote>
 <p>使用echo和&gt;修改镜像配置文件.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch'</span> &gt; /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">'Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch'</span> &gt; /etc/pacman.d/mirrorlist<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/pacman.d/mirorrlist	<span class="comment">#查看镜像配置文件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cat /etc/pacman.d/mirorrlist	<span class="hljs-comment">#查看镜像配置文件</span><br></code></pre></td></tr></table></figure>
 
 <p><img src="https://i.loli.net/2020/07/15/uTGfl6PwjrxenOd.png" alt="image-20200714042441073"></p>
 <p>可以看到镜像文件已经修改成了阿里源.</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base linux linux-firmware</span><br></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacstrap /mnt base linux linux-firmware<br></code></pre></td></tr></table></figure>
 
 
 
@@ -380,7 +380,7 @@
 <h2 id="配置系统"><a href="#配置系统" class="headerlink" title="配置系统"></a>配置系统</h2><p>等安装完成之后，进行archlinux的配置。</p>
 <ul>
 <li><p>生成fstab文件</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U <span class="regexp">/mnt &gt;&gt; /m</span>nt<span class="regexp">/etc/</span>fstab</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">genfstab -U <span class="hljs-regexp">/mnt &gt;&gt; /m</span>nt<span class="hljs-regexp">/etc/</span>fstab<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>fstab文件可用于定义磁盘分区，各种其他块设备或远程文件系统应如何装入文件系统。</p>
@@ -390,13 +390,13 @@
 <ul>
 <li>由于之前已经修改过了live盘里的镜像配置，所以使用 &gt; 重定向就可以了</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/pacman.d/mirrorlist &gt; /mnt/etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">cat /etc/pacman.d/mirrorlist &gt; /mnt/etc/pacman.d/mirrorlist<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>切换到新安装的archlinux系统（我们目前还是在live模式下面操作）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">arch-chroot /mnt<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>aur源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -S vim <span class="comment">#默认的是没安装vim的,所以需要安装一下</span></span><br><span class="line">vim /etc/pacman.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -S vim <span class="hljs-comment">#默认的是没安装vim的,所以需要安装一下</span><br>vim /etc/pacman.conf<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>在行末添加</p>
@@ -407,18 +407,18 @@
 <ul>
 <li>配置完后刷新下数据库</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syu</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -Syu<br></code></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="时区和时间"><a href="#时区和时间" class="headerlink" title="时区和时间"></a>时区和时间</h3><ul>
 <li>设置时间，亚洲，上海</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime<br></code></pre></td></tr></table></figure>
 
 <h3 id="本地化"><a href="#本地化" class="headerlink" title="本地化"></a>本地化</h3><ul>
 <li><p>本地化</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/locale.gen</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim /etc/locale.gen<br></code></pre></td></tr></table></figure>
 
 <p>将 zh_CN.UTF-8 和en_US.UTF-8取消注释</p>
 <blockquote>
@@ -429,9 +429,9 @@
 </blockquote>
 </li>
 <li><p>生成本地化配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locale-gen</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">locale-gen<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'LANG=zh_CN.UTF-8'</span> &gt; /etc/locale.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> <span class="hljs-string">'LANG=zh_CN.UTF-8'</span> &gt; /etc/locale.conf<br></code></pre></td></tr></table></figure>
 
 
 
@@ -510,9 +510,9 @@
 <ul>
 <li>修改主机名</li>
 </ul>
-<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hostnamectl </span><span class="built_in">set-hostname</span> <span class="string">charons</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">hostnamectl </span><span class="hljs-built_in">set-hostname</span> <span class="hljs-string">charons</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim /etc/hosts<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>将以下内容写入hosts文件</p>
@@ -520,56 +520,56 @@
 </blockquote>
 <h3 id="用户设置"><a href="#用户设置" class="headerlink" title="用户设置"></a>用户设置</h3><ul>
 <li><p>设置root密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">passwd root<br></code></pre></td></tr></table></figure>
 
 <p>根据需求输入密码。</p>
 </li>
 <li><p>创建用户</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -m -G wheel wind</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">useradd -m -G wheel wind<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>创建wind用户，并在/home下创建wind用户的home主目录，将其加入wheel组。关于wheel组：</p>
 <p>wheel 组的概念继承自 UNIX。当服务器需要进行一些日常系统管理员无法执行的高级维护时，往往就要用到 root  权限；而“wheel” 组就是一个包含这些特殊权限的用户池；也就是说，如果你不是“wheel”组的成员，就无法取得 root  权限进行一些特权的操作；</p>
 </blockquote>
 <p>给新创建的用户设置密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd wind</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">passwd wind<br></code></pre></td></tr></table></figure>
 
 <p>普通用户加入whell后才能申请使用root权限，想要普通用户以root身份执行某个命令还需要安装sudo这个包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S sudo</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -S sudo<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sudoer</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim /etc/sudoer<br></code></pre></td></tr></table></figure>
 
 <p>找到root ALL (ALL)=ALL这一行，下面添加一行：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">wind</span> <span class="string">ALL(ALL)=ALL</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">wind</span> <span class="hljs-string">ALL(ALL)=ALL</span><br></code></pre></td></tr></table></figure>
 
 <p>安装完成之后切换到普通用户，</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su wind</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">su wind<br></code></pre></td></tr></table></figure>
 
 <p>以后想要普通用户使用root权限的时候，命令前面加上 <strong>sudo</strong> 就可以啦，比如</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Syu</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -Syu<br></code></pre></td></tr></table></figure>
 
 <p><img src="https://i.loli.net/2020/07/15/HzNoumvSTgUWZcn.png" alt="image-20200715061303031"></p>
 </li>
 </ul>
 <h3 id="安装引导程序"><a href="#安装引导程序" class="headerlink" title="安装引导程序"></a>安装引导程序</h3><p>以grub为例,在boot文件夹里创建efi文件夹，再切换到arch live盘，将之前格式化好的boot分区挂载到 /mnt/boot/efi下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /boot/efi</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">mount /dev/sda1 /mnt/boot/efi</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">mkdir /boot/efi<br><span class="hljs-built_in">exit</span><br>mount /dev/sda1 /mnt/boot/efi<br></code></pre></td></tr></table></figure>
 
 <p>再切换到/mnt下安装好的archlinux,安装grub</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br><span class="line">pacman -S grub</span><br><span class="line">pacman -S efibootmgr</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">arch-chroot /mnt<br>pacman -S grub<br>pacman -S efibootmgr<br></code></pre></td></tr></table></figure>
 
 
 
 <ul>
 <li>安装grub到boot/efi</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>对于bios启动而非efi，则不用分efi分区</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=i386-pc /dev/sda</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grub-install --target=i386-pc /dev/sda<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-mkconfig -o /boot/grub/grub.cfg	<span class="comment">#生成grub.cfg文件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">grub-mkconfig -o /boot/grub/grub.cfg	<span class="hljs-comment">#生成grub.cfg文件</span><br></code></pre></td></tr></table></figure>
 
 <p>生成grub.cfg之后arch的安装就结束了，拔掉U盘退出/mnt下的系统，<strong>reboot</strong>之后就能进入新安装的archlinux了。</p>
 <p><img src="https://i.loli.net/2020/07/15/TjxgvVaHQY8pctE.png" alt="image-20200714204315024"></p>
@@ -578,7 +578,7 @@
 <h2 id="安装桌面"><a href="#安装桌面" class="headerlink" title="安装桌面"></a>安装桌面</h2><p>当然了,只有命令行肯定是不够用的,安装一个桌面是必要的.</p>
 <p>桌面有很多选择,比如轻量级的xfce,对系统要求稍高的gnome,以美化著称的dde,比较折腾的i3…这里以gnome为例,记录一下安装过程</p>
 <h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><p>1.安装Xorg</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xorg-server xorg-xinit</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S xorg-server xorg-xinit<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>Xorg （通常简称为 X）在 Linux 用户中非常流行，已经成为图形用户程序的必备条件，所以大部分发行版都提供了它。详情参见 <a href="https://en.wikipedia.org/wiki/X.Org_Server" target="_blank" rel="noopener">Xorg</a> 维基文章或访问<a href="http://www.x.org/wiki/" target="_blank" rel="noopener">Xorg 网站</a>。</p>
@@ -591,41 +591,41 @@
 <ul>
 <li>自行根据显卡型号安装对应的驱动,比如我的是AMD RX590,安装开源驱动</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xf86-video-amdgpu</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S xf86-video-amdgpu<br></code></pre></td></tr></table></figure>
 
 <p>3.安装gnome和扩展工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gnome gnome-tweaks</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S gnome gnome-tweaks<br></code></pre></td></tr></table></figure>
 
 <h3 id="安装gdm"><a href="#安装gdm" class="headerlink" title="安装gdm"></a>安装gdm</h3><blockquote>
 <p>来自<a href="https://wiki.gnome.org/Projects/GDM" target="_blank" rel="noopener">GDM - GNOME显示管理器</a>：“GNOME显示管理器（GDM）是一个管理图形显示服务和处理图形用户登录的程序</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gdm</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> gdm</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S gdm<br>sudo systemctl <span class="hljs-built_in">enable</span> gdm<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>至此桌面环境已经安装完毕了,可以重启,也可以手动启动gdm</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start gdm</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo systemctl start gdm<br></code></pre></td></tr></table></figure>
 
 <h2 id="美化及必要的软件安装"><a href="#美化及必要的软件安装" class="headerlink" title="美化及必要的软件安装"></a>美化及必要的软件安装</h2><ul>
 <li>进入桌面后开始安装一些必要的软件和桌面配置</li>
 </ul>
-<h3 id="开启网络服务"><a href="#开启网络服务" class="headerlink" title="开启网络服务"></a>开启网络服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start NetworkManager</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure>
+<h3 id="开启网络服务"><a href="#开启网络服务" class="headerlink" title="开启网络服务"></a>开启网络服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo systemctl start NetworkManager<br>sudo systemctl <span class="hljs-built_in">enable</span> NetworkManager<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>静态ip</li>
 </ul>
 <p><a href="https://wiki.archlinux.org/index.php/NetworkManager_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%9D%99%E6%80%81_IP_%E8%AE%BE%E7%BD%AE_%E5%8F%98%E6%88%90_DHCP" target="_blank" rel="noopener">wiki</a>上给出了<code>nkcli</code>很详细的用法,不过感觉有点繁琐,我这里使用<a href="https://blog.charons.work/2020/06/22/netctl%E9%9D%99%E6%80%81ip/" target="_blank" rel="noopener">netctl</a>来使用静态ip</p>
 <h3 id="安装输入法"><a href="#安装输入法" class="headerlink" title="安装输入法"></a>安装输入法</h3><p>1.安装输入法包</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S  fcitx5-im fcitx5-qt	fcitx5-chinese-addons</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S  fcitx5-im fcitx5-qt	fcitx5-chinese-addons<br></code></pre></td></tr></table></figure>
 
 <p>2.环境变量</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.pam_environment</span><br><span class="line"></span><br><span class="line">INPUT_METHOD  DEFAULT=fcitx</span><br><span class="line">GTK_IM_MODULE DEFAULT=fcitx</span><br><span class="line">QT_IM_MODULE  DEFAULT=fcitx</span><br><span class="line">XMODIFIERS    DEFAULT=\@im=fcitx</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim ~/.pam_environment<br><br>INPUT_METHOD  DEFAULT=fcitx<br>GTK_IM_MODULE DEFAULT=fcitx<br>QT_IM_MODULE  DEFAULT=fcitx<br>XMODIFIERS    DEFAULT=\@im=fcitx<br></code></pre></td></tr></table></figure>
 
 <p>配置完环境变量注销重登陆或者重启就可以了.然后按win键找到<code>fcitx5配置</code><img src="https://i.loli.net/2020/12/01/rcaYepLlPNKxSkJ.png" alt="image-20201201110057142"></p>
 <p>功能还是很强大的,可以根据自己的需求进行配置.</p>
 <h3 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h3><p>可以通过chrome来安装gnome扩展,当然也可以在github上下载下来手动安装,前者更方便一些.</p>
 <p>1.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S google-chrome</span><br><span class="line">sudo pacman -S gnome-shell-extensions</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S google-chrome<br>sudo pacman -S gnome-shell-extensions<br></code></pre></td></tr></table></figure>
 
 <p>2.在chrome里安装gnome扩展</p>
 <ul>
@@ -669,7 +669,7 @@
 <blockquote>
 <p>要在系统范围内（对所有用户有效）安装字体，请将文件夹移动到 <code>/usr/share/fonts/</code> 目录。这些文件需要对每个用户而言都是可读的，使用 <a href="https://wiki.archlinux.org/index.php/Chmod" target="_blank" rel="noopener">chmod</a> 来设置合理的权限 (比如，文件至少为 <code>0444</code> ，而目录至少为 <code>0555</code>)。</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fc</span>-cache -vf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">fc</span>-cache -vf<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>主题</li>
@@ -679,24 +679,24 @@
 <h3 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h3><ul>
 <li>本来是想安装一直在用的透明gnome终端的,但是aur上貌似无法安装了,换tilix吧.</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S tilix</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S tilix<br></code></pre></td></tr></table></figure>
 
 <blockquote>
 <p>tilix功能还是挺多的,自行探索配置文件和快捷键吧,用了会上瘾</p>
 </blockquote>
 <h3 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h3><p>1.首先安装zsh</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S zsh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S zsh<br></code></pre></td></tr></table></figure>
 
 <p>2.安装Oh-my-zsh</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sh -c <span class="hljs-string">"<span class="hljs-variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span><br></code></pre></td></tr></table></figure>
 
 <p>3.切换主题</p>
-<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br><span class="line"></span><br><span class="line">ZSH_THEME=<span class="string">"agnoster"</span>	##找到这行,主题换成自己喜欢的</span><br></pre></td></tr></table></figure>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs clean">vim ~/.zshrc<br><br>ZSH_THEME=<span class="hljs-string">"agnoster"</span>	##找到这行,主题换成自己喜欢的<br></code></pre></td></tr></table></figure>
 
 <p>4.切换默认的shell</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">chsh -s /bin/zsh<br></code></pre></td></tr></table></figure>
 
-<h3 id="网易云"><a href="#网易云" class="headerlink" title="网易云"></a>网易云</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S netease-cloud-music</span><br></pre></td></tr></table></figure>
+<h3 id="网易云"><a href="#网易云" class="headerlink" title="网易云"></a>网易云</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S netease-cloud-music<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>解锁网易云灰色歌曲可以参考我之前的<a href="https://blog.charons.work/2020/11/13/%E8%A7%A3%E9%94%81%E7%BD%91%E6%8A%91%E4%BA%91%E7%81%B0%E8%89%B2%E6%AD%8C%E5%8D%95/" target="_blank" rel="noopener">文章</a></li>

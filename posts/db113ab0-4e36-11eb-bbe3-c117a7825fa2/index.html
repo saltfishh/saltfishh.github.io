@@ -258,13 +258,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="netctl静态ip"><a href="#netctl静态ip" class="headerlink" title="netctl静态ip"></a>netctl静态ip</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/netctl/static_profile</span><br></pre></td></tr></table></figure>
+        <h2 id="netctl静态ip"><a href="#netctl静态ip" class="headerlink" title="netctl静态ip"></a>netctl静态ip</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim /etc/netctl/static_profile<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Interface</span>=<span class="string">'ens33'</span></span><br><span class="line"><span class="attr">Address</span>=<span class="string">('192.168.0.104/24')</span></span><br><span class="line"><span class="attr">IP</span>=<span class="string">static</span></span><br><span class="line"><span class="attr">Connection</span>=<span class="string">ethernet</span></span><br><span class="line"><span class="attr">Gateway</span>=<span class="string">'192.168.0.253'</span></span><br><span class="line"><span class="attr">DNS</span>=<span class="string">('8.8.8.8')</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">Interface</span>=<span class="hljs-string">'ens33'</span><br><span class="hljs-attr">Address</span>=<span class="hljs-string">('192.168.0.104/24')</span><br><span class="hljs-attr">IP</span>=<span class="hljs-string">static</span><br><span class="hljs-attr">Connection</span>=<span class="hljs-string">ethernet</span><br><span class="hljs-attr">Gateway</span>=<span class="hljs-string">'192.168.0.253'</span><br><span class="hljs-attr">DNS</span>=<span class="hljs-string">('8.8.8.8')</span><br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip link <span class="built_in">set</span> ens33 down</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo ip link <span class="hljs-built_in">set</span> ens33 down<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netctl start static_profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo netctl start static_profile<br></code></pre></td></tr></table></figure>
 
 
     </div>
