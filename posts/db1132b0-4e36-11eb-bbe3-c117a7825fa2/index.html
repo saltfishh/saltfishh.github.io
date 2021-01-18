@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32-32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Consolas:300,300italic,400,400italic,700,700italic|Consloas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.hearthewind.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"yes","style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="自建一个跨平台的密码管理工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自建跨平台的bitwarden密码管理器">
+<meta property="og:url" content="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa2/index.html">
+<meta property="og:site_name" content="且听风吟">
+<meta property="og:description" content="自建一个跨平台的密码管理工具">
+<meta property="og:image" content="https://i.loli.net/2021/01/19/TKCGgv3fNahp5kW.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/19/1UObX7JTan8zPdL.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/19/H3xUIKnrsSVpRQw.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/19/ph7DicUuPjlGn8z.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/19/JtATyDceMKOXu5Q.png">
+<meta property="article:published_time" content="2021-01-04T02:45:07.000Z">
+<meta property="article:modified_time" content="2021-01-18T22:46:12.275Z">
+<meta property="article:author" content="且听风吟">
+<meta property="article:tag" content="password">
+<meta property="article:tag" content="bitwarden">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/19/TKCGgv3fNahp5kW.png">
+
+<link rel="canonical" href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>自建跨平台的bitwarden密码管理器 | 且听风吟</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'G-Q8JH2W2VFH',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?674bfad7a291414dce011bb7e25c1666";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">且听风吟</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">0 error，0 warning</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2021/01/09/jr2Q7lsXCcgRKvu.png">
+      <meta itemprop="name" content="且听风吟">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="且听风吟">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自建跨平台的bitwarden密码管理器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-04 10:45:07" itemprop="dateCreated datePublished" datetime="2021-01-04T10:45:07+08:00">2021-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-19 06:46:12" itemprop="dateModified" datetime="2021-01-19T06:46:12+08:00">2021-01-19</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">自建一个跨平台的密码管理工具</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><h4 id="为什么用密码管理工具"><a href="#为什么用密码管理工具" class="headerlink" title="为什么用密码管理工具"></a>为什么用密码管理工具</h4><p>🏄确实给我们带来很多欢乐和有用的信息,但是如果各个平台都使用同一个密码或者为了方便记忆使用弱口令,这是很十分危险的.繁琐的密码又难以记住,所以不如把密码交给一个信得过的工具来保存.比如1passwd,safeInCloud.但是1passwd的体验和价格并不是很令人满意.在网上看到了一款开源的密码管理工具<a href="https://bitwarden.com/" target="_blank" rel="noopener">bitwarden</a>,重要是开源,可以自行搭建,也不用担心服务商跑路从而使得自己的密码丢失.</p>
+<h4 id="关于bitwarden"><a href="#关于bitwarden" class="headerlink" title="关于bitwarden"></a>关于bitwarden</h4><p>从几个月的使用体验来看,生态还是很不错的,linux,windows,android,浏览器扩展都可以轻松的找到并使用,功能也很丰富.</p>
+<p>bitwarden官方是使用<code>.net</code>镜像来部署的,存储使用的<code>sqlserver</code>不过比较占空间,对服务器有一定的要求.</p>
+<p><a href="https://github.com/dani-garcia/bitwarden_rs" target="_blank" rel="noopener">github</a>上有dalao使用rust实现了他的功能,体积小巧功能全面,可以很方便的部署.</p>
+<h3 id="部署bitwarden"><a href="#部署bitwarden" class="headerlink" title="部署bitwarden"></a>部署bitwarden</h3><h4 id="开始前的准备"><a href="#开始前的准备" class="headerlink" title="开始前的准备"></a>开始前的准备</h4><ul>
+<li><p>首先需要一台vps,512m内存的也能完美运行.</p>
+</li>
+<li><p>有个域名,没有的话可以去<a href="namesilo.com">namesiko</a>购买一个,支持支付宝pp微信.</p>
+</li>
+<li><p>安装docker,可以参考<a href="https://www.runoob.com/docker/ubuntu-docker-install.html" target="_blank" rel="noopener">菜鸟教程</a>,网站提供了比较全面的发行版安装步骤.</p>
+</li>
+<li><p>安装nginx</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install nginx</span><br></pre></td></tr></table></figure>
+
+<h4 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当然了,如果你的服务器使用arm架构,应该使用对应的镜像,下面的表格是bitwardenrs给出的参考</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Hardware used</th>
+<th>OS</th>
+<th>Docker architecture reported</th>
+<th>Image used</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Regular 64bit server</td>
+<td>Ubuntu 18.04</td>
+<td>x86_64</td>
+<td><code>bitwardenrs/server</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>O-Droid HC2</td>
+<td>Armbian</td>
+<td>arm7l (arm32)</td>
+<td><code>registry.lollipopcloud.solutions/arm32v7/bitwarden</code> (see notes)</td>
+<td>OK</td>
+<td>Unofficial image built from upstream sources ; <code>bitwardenrs/server:raspberry</code> is the official equivalent image</td>
+</tr>
+<tr>
+<td>Raspberry Pi Zero W</td>
+<td>Raspbian (4.14.98+)</td>
+<td>linux/arm (armv6l)</td>
+<td><code>bitwardenrs/server:armv6</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>Raspberry Pi Zero W</td>
+<td>Raspbian (4.19.66+)</td>
+<td>linux/arm (armv6l)</td>
+<td><code>bitwardenrs/server:latest</code> (Multiarch)</td>
+<td>OK</td>
+<td>Only when using the docker experimental feature ‘docker pull  –platform=linux/arm/v6’. Otherwise the wrong image will be selected (<a href="https://github.com/dani-garcia/bitwarden_rs/issues/1064" target="_blank" rel="noopener">https://github.com/dani-garcia/bitwarden_rs/issues/1064</a>)</td>
+</tr>
+<tr>
+<td>Raspberry Pi 1 B</td>
+<td>Raspbian (4.19.97+)</td>
+<td>linux/arm (armv6l)</td>
+<td><code>bitwardenrs/server:armv6</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>Raspberry Pi 3 B</td>
+<td>Raspbian (4.14.98-v7+)</td>
+<td>linux/arm (armv7l)</td>
+<td><code>bitwardenrs/server:raspberry</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>Raspberry Pi 4</td>
+<td>Raspbian (4.19.118-v7l+)</td>
+<td>linux/arm (armv7l)</td>
+<td><code>bitwardenrs/server:raspberry</code></td>
+<td>OK</td>
+<td>4go version, rev 1.1</td>
+</tr>
+<tr>
+<td>Synology</td>
+<td>DSM (DSM 6.2.1-23824 Update 6)</td>
+<td>Docker-x64-17.05.0-0367</td>
+<td><code>bitwardenrs/server:latest</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>Synology</td>
+<td>DSM (DSM 6.2.2-24922 Update 4)</td>
+<td>Docker-x64-18.09.0-0506</td>
+<td><code>bitwardenrs/server:1.13.0-alpine</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+<tr>
+<td>Regular 64bit server</td>
+<td>Unraid 6.8.0</td>
+<td>19.03.5</td>
+<td><code>bitwardenrs/server:latest</code></td>
+<td>OK</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>比如我在用raspi4搭建的,所以应该拉取<code>raspberry</code>镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull bitwardenrs/server:raspberry</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动bitwarden"><a href="#启动bitwarden" class="headerlink" title="启动bitwarden"></a>启动bitwarden</h4><p>只需要一行命令就能启动<strong>bitwarden</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name bitwarden \</span><br><span class="line">  -e SIGNUPS_ALLOWED=<span class="literal">true</span> \</span><br><span class="line">  -e WEBSOCKET_ENABLED=<span class="literal">true</span> \</span><br><span class="line">  -e LOG_FILE=/data/bitwarden.log \</span><br><span class="line">  -p 8880:80 \</span><br><span class="line">  -p 3012:3012 \</span><br><span class="line">  -v /bw-data/:/data/ \</span><br><span class="line">  bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-d    #镜像后台运行</p>
+<p>-e SIGNUPS_ALLOWED=true    #允许注册</p>
+<p>-e WEBSOCKET_ENABLED=true    #允许websocket notification</p>
+<p>-e LOG_FILE=/data/bitwarden.log    #日志存放目录</p>
+<p>-p 8880:80    #镜像默认开启的web端口是8880,将容器的8880映射到宿主机的80端口</p>
+<p>-v /bw-data/:/data/    #映射卷,用于存放birwarden的数据</p>
+</blockquote>
+<p>接下来配置web容器</p>
+<h4 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h4><ul>
+<li>申请证书</li>
+</ul>
+<p>Let’s encrypt可以提供免费的且自动续费的证书,这里用certbot申请</p>
+<ul>
+<li>安装snap</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt insall snapd</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装certbot</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo snap install core</span><br><span class="line">sudo snap refresh core</span><br><span class="line">sudo snap install --classic certbot</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建软链接</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /snap/bin/certbot /usr/bin/certbot</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装certbot申请证书</li>
+</ul>
+<p>certbot需要验证你的网站,首先需要打开nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start nginx</span><br><span class="line">sudo certbot --nginx</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>按提示输入你的域名certbot会申请证书,并且会帮你修改nginx配置,如果只想申请证书不需要certbot帮你修改配置,可以使用下面的命令</p>
+<p><code>sudo certbot certonly --nginx</code></p>
+</blockquote>
+<p>1.5 自动续期证书</p>
+<ul>
+<li>申请的证书有效期3个月,开启自动续期</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo certbot renew --dry-run</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>certbot自动续期依赖于<code>cron</code>,大多数linux都已经安装,如果没有的话自行安装即可</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install cron</span><br></pre></td></tr></table></figure>
+
+<p>1.6 配置nginx</p>
+<ul>
+<li>在<code>/etc/nginx/conf.d</code>下创建一个conf文件</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/conf.d/bitwarden.conf</span><br></pre></td></tr></table></figure>
+
+<p>以下是我自己的配置文件,也可以让certbot自动生成,修改参数</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">  <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl http2;	<span class="comment">#监听ipv6</span></span><br><span class="line">  <span class="attribute">listen</span> <span class="number">443</span> ssl http2;	<span class="comment">#ipv4</span></span><br><span class="line">  <span class="attribute">ssl_certificate</span> certbot申请的证书文件存放路径crt;</span><br><span class="line">  <span class="attribute">ssl_certificate_key</span> certbot申请的证书文件存放路径.key;</span><br><span class="line">  <span class="attribute">ssl_protocols</span> TLSv1 TLSv1.<span class="number">1</span> TLSv1.<span class="number">2</span> TLSv1.<span class="number">3</span>;</span><br><span class="line">  <span class="attribute">ssl_ciphers</span> TLS13-AES-<span class="number">256</span>-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-<span class="number">128</span>-GCM-SHA256:TLS13-AES-<span class="number">128</span>-CCM-<span class="number">8</span>-SHA256:TLS13-AES-<span class="number">128</span>-CCM-SHA256:EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;</span><br><span class="line">  <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">on</span>;</span><br><span class="line">  <span class="attribute">ssl_session_timeout</span> <span class="number">10m</span>;</span><br><span class="line">  <span class="attribute">ssl_session_cache</span> builtin:<span class="number">1000</span> shared:SSL:<span class="number">10m</span>;</span><br><span class="line">  <span class="attribute">ssl_buffer_size</span> <span class="number">1400</span>;</span><br><span class="line">  <span class="attribute">add_header</span> Strict-Transport-Security max-age=<span class="number">15768000</span>;</span><br><span class="line">  <span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line">  <span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line">  <span class="attribute">server_name</span> pwasswd.example.com;	<span class="comment">#你的域名</span></span><br><span class="line">  </span><br><span class="line">   <span class="attribute">client_max_body_size</span> <span class="number">128M</span>;</span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_set_header</span>  Host  <span class="string">'passwd.example.com'</span>;	<span class="comment">#修改成你的域名</span></span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:8880;</span><br><span class="line">        <span class="attribute">proxy_redirect</span> <span class="literal">off</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">     &#125;</span><br><span class="line">    <span class="attribute">location</span> /notifications/hub &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1:3012;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="string">"upgrade"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="attribute">location</span> /notifications/hub/negotiate &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1:8880;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line"><span class="attribute">listen</span> <span class="number">80</span>;	<span class="comment">#ipv4</span></span><br><span class="line"><span class="attribute">listen</span> [::]:<span class="number">80</span>;	<span class="comment">#ipv6</span></span><br><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">	<span class="attribute">return</span> <span class="number">301</span> https://<span class="variable">$host</span><span class="variable">$request_uri</span>;	<span class="comment">#重定向到https</span></span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置完成之后测试一下nginx语法是否正确</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -t</span><br></pre></td></tr></table></figure>
+
+<p>如果出现 <code>nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</code>这说明配置文件语法没有错误,接下来启动nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart nginx</span><br></pre></td></tr></table></figure>
+
+<p>没报错的话就说明成功启动了,打开浏览器输入nginx配置的域名,就能看到bitwarden的页面了.</p>
+<p><img src="https://i.loli.net/2021/01/19/TKCGgv3fNahp5kW.png" alt="image-20210119043208369"></p>
+<ul>
+<li>创建帐号,再登陆就能开始创建你的密码了</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/19/1UObX7JTan8zPdL.png" alt="image-20210119043429036"></p>
+<h3 id="配置bitwarden"><a href="#配置bitwarden" class="headerlink" title="配置bitwarden"></a>配置bitwarden</h3><h5 id="关闭注册"><a href="#关闭注册" class="headerlink" title="关闭注册"></a>关闭注册</h5><ul>
+<li>注册完帐号,设置主密码后最好关闭注册,因为目前是开放的,任何人都可以注册.</li>
+</ul>
+<p>只需要删除刚才的<code>bitwarden</code>容器,再重新创建即可,数据在卷<code>/bw-data/</code>下不会丢失,重新挂载就行了.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker stop bitwarden</span><br><span class="line"></span><br><span class="line">docker run -d --name bitwarden \</span><br><span class="line">  -e SIGNUPS_ALLOWED=<span class="literal">false</span> \</span><br><span class="line">  -e WEBSOCKET_ENABLED=<span class="literal">true</span> \</span><br><span class="line">  -e LOG_FILE=/data/bitwarden.log \</span><br><span class="line">  -p 8880:80 \</span><br><span class="line">  -p 3012:3012 \</span><br><span class="line">  -v /bw-data/:/data/ \</span><br><span class="line">  bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 将 <code>-e SIGNUPS_ALLOWED</code>改成<code>false</code>即可禁止注册.</p>
+</blockquote>
+<p>启动容器后刷新网页,就无法注册了.</p>
+<h5 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h5><ul>
+<li><p>bitwarden提供很多密码管理工具的导入功能,比如1password,safaInCloud</p>
+</li>
+<li><p>默认语言是英文,可以在<code>setting</code>s &gt; <code>options</code> &gt; <code>Language</code>里设置中文或者你喜欢的语言</p>
+</li>
+</ul>
+<p><code>工具</code> &gt; <code>导入数据</code>,选择之前的密码管理工具到处的json或csv数据,进行导入</p>
+<p><img src="https://i.loli.net/2021/01/19/H3xUIKnrsSVpRQw.png" alt="image-20210119044338371"></p>
+<h5 id="两步登陆"><a href="#两步登陆" class="headerlink" title="两步登陆"></a>两步登陆</h5><ul>
+<li>为了安全起见,开启两步登陆.这样登陆你的密码管理器的时候就要开启验证,会更安全点.</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/19/ph7DicUuPjlGn8z.png" alt="image-20210119044514859"></p>
+<p>这里我使用的<code>google authenticator</code>,手机扫码就能绑定,十分方便.当然,你也可以选择邮箱或者他提供的其他方法.</p>
+<h5 id="跨平台app"><a href="#跨平台app" class="headerlink" title="跨平台app"></a>跨平台app</h5><p>bitwarden的app生态还是比较全面的</p>
+<ul>
+<li><p>android</p>
+<ul>
+<li><a href="https://play.google.com/store/apps/details?id=com.x8bit.bitwarden" target="_blank" rel="noopener">google play</a></li>
+</ul>
+</li>
+<li><p>linux </p>
+<ul>
+<li><code>sudo pacman -S bitwarden</code></li>
+</ul>
+</li>
+<li><p>浏览器</p>
+<ul>
+<li><a href="https://addons.mozilla.org/en-US/firefox/addon/bitwarden-password-manager/?utm_source=addons.mozilla.org&utm_medium=referral&utm_content=search" target="_blank" rel="noopener">firefox扩展</a> <a href="https://chrome.google.com/webstore/detail/bitwarden-free-password-m/nngceckbapebfimnlniiiahkandclblb" target="_blank" rel="noopener">chrome扩展</a></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/19/JtATyDceMKOXu5Q.png" alt="image-20210119045203107"></p>
+<p>浏览器直接在扩展里点左上角设置,配置服务器URL,就是自己刚才的域名.然后登陆就可以了,android同理.</p>
+<p>无论是浏览器扩展,网页端还是客户端,都可以导入到处你的密码数据.不过导出的数据是明文,csv或json格式.</p>
+<h4 id="备份和恢复数据"><a href="#备份和恢复数据" class="headerlink" title="备份和恢复数据"></a>备份和恢复数据</h4><ul>
+<li>由于自带的镜像基于sqlite3,备份数据的时候需要先安装<code>sqlite3</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install sqlite sqlite3</span><br></pre></td></tr></table></figure>
+
+<h5 id="备份数据"><a href="#备份数据" class="headerlink" title="备份数据"></a>备份数据</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /bw-data</span><br><span class="line">mkdir -p /bw-backup/	<span class="comment">#创建文件夹存放备份数据,当然也可以自定义存放的位置</span></span><br><span class="line">sqlite3 /bw-data/db.sqlite3 <span class="string">".backup '/bw-backup/backup.sqlite3'"</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>定时任务自动备份<ul>
+<li>可以将定时备份交给cron来做</li>
+</ul>
+</li>
+</ul>
+<p><code>cron</code>的格式和语法可以参考<a href="https://wiki.archlinux.org/index.php/Cron_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)" target="_blank" rel="noopener">wiki</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">crontab -e </span><br><span class="line"></span><br><span class="line">* * */1 * * root sqlite3 /bw-data/db.sqlite3 <span class="string">".backup '/backup/backup.sqlite3'"</span></span><br><span class="line"><span class="comment">#这里用root执行的原因是 `/`目录一般的用户大多没有权限,当然也可以使用chmod给其他用户赋予写入权限</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="恢复数据"><a href="#恢复数据" class="headerlink" title="恢复数据"></a>恢复数据</h5><ul>
+<li>指定数据URL</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name bitwarden \</span><br><span class="line">-e DATABASE_URL=/database/backup.sqlite3 \</span><br><span class="line">-v /bw-data/:/data/ \</span><br><span class="line">-v /backup/:/database/ \</span><br><span class="line">-p 8880:80 \</span><br><span class="line">bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p> 首先将包含备份数据<code>backup.sqlite3</code>的<code>/backup</code>目录映射到容器的<code>/database</code>,再指定容器要恢复的<code>DATABASE_URL</code>指定为 <code>/database/backup.sqlite3</code></p>
+</blockquote>
+<p>这样bitwarden就会从你指定的文件中读取数据了</p>
+<ul>
+<li>手动覆盖<code>db.sqlite3</code>文件也是一样的</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mv /backup/backup.sqlite3 /bw-data/db.sqlite3 /bw-data/db.sqlite3</span><br><span class="line"></span><br><span class="line">docker run -d --name bitwarden \</span><br><span class="line">-v /bw-data/:/data/ \</span><br><span class="line">-p 8880:80 \</span><br><span class="line">-e SIGNUPS_ALLOWED=<span class="literal">false</span> \</span><br><span class="line">bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<p>然后刷新浏览器,用以前的帐号密码登陆就可以啦</p>
+<h4 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h4><h5 id="使用其他数据库"><a href="#使用其他数据库" class="headerlink" title="使用其他数据库"></a>使用其他数据库</h5><p>bitwardenrs项目是由sqlite3来完成存储的,当然了也可以指定<code>Mysql``Postgresql</code>数据库,不过这需要自行构建镜像.参考<a href="https://github.com/dani-garcia/bitwarden_rs/wiki/Building-your-own-docker-image" target="_blank" rel="noopener">github_wiki</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Build the docker image:</span></span><br><span class="line">docker build -t bitwarden_rs --build-arg DB=mysql .</span><br><span class="line"></span><br><span class="line"><span class="comment"># Build the docker image:</span></span><br><span class="line">docker build -t bitwarden_rs --build-arg DB=postgresql .</span><br></pre></td></tr></table></figure>
+
+<h5 id="开启SMTP"><a href="#开启SMTP" class="headerlink" title="开启SMTP"></a>开启SMTP</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name bitwarden \</span><br><span class="line">  -e SMTP_HOST=&lt;smtp.domain.tld&gt; \</span><br><span class="line">  -e SMTP_FROM=&lt;bitwarden@domain.tld&gt; \</span><br><span class="line">  -e SMTP_PORT=587 \</span><br><span class="line">  -e SMTP_SSL=<span class="literal">true</span> \</span><br><span class="line">  -e SMTP_USERNAME=&lt;username&gt; \</span><br><span class="line">  -e SMTP_PASSWORD=&lt;password&gt; \</span><br><span class="line">  -v /bw-data/:/data/ \</span><br><span class="line">  -p 80:80 \</span><br><span class="line">  bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>个人认为,虽然没有绝对的安全,密码交给闭源的厂商来管理总觉得很奇怪,还是放在自己手里比较好.当然,前提是需要自己来维护这些工具和项目.如果上手和维护起来感觉吃力,不如尝试bitwarden的免费版产品,功能也很齐全.直接在<a href="https://bitwarden.com/" target="_blank" rel="noopener">bitwarden</a>官网注册就可以.</p>
+<p>bitwarden的功能还是比较齐全的,app端支持指纹解锁,pin解锁和自动填充.在浏览器扩展上表现也很优秀,注册帐号的时候也会有提示自动保存到bitwarden.最重要的还是开源的.</p>
+<p>互联网的环境很复杂,看不见的地方时时刻刻都有扫描爆破ssh端口的恶意脚本;商业公司的产品时时刻刻想获取你的位置,通讯录,通话记录,浏览记录,粘贴板…瞎🐔🎱申请权限.</p>
+<p>十分感谢开源的厂商和参与开源项目的开发者,把自己的成果拿出来供大家使用,这大概就是互联网中<strong>互联</strong>的一种体现吧.</p>
+<p>参考<a href="https://wzfou.com/bitwarden-rs/" target="_blank" rel="noopener">挖站否</a> ,更详细的文档请参考<a href="https://github.com/dani-garcia/bitwarden_rs/wiki/Starting-a-Container" target="_blank" rel="noopener">github_wiki</a></p>
+<hr>
+<p>以上</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>且听风吟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa2/" title="自建跨平台的bitwarden密码管理器">http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/password/" rel="tag"># password</a>
+              <a href="/tags/bitwarden/" rel="tag"># bitwarden</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/db1132b0-4e36-11eb-bbe3-c117a7825fa4/" rel="prev" title="在docker里运行openwrt">
+      <i class="fa fa-chevron-left"></i> 在docker里运行openwrt
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/f99dcd70-5001-11eb-99af-1b5408788621/" rel="next" title="获取本地ip的脚本">
+      获取本地ip的脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么用密码管理工具"><span class="nav-number">1.1.</span> <span class="nav-text">为什么用密码管理工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于bitwarden"><span class="nav-number">1.2.</span> <span class="nav-text">关于bitwarden</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署bitwarden"><span class="nav-number">2.</span> <span class="nav-text">部署bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开始前的准备"><span class="nav-number">2.1.</span> <span class="nav-text">开始前的准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取镜像"><span class="nav-number">2.2.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动bitwarden"><span class="nav-number">2.3.</span> <span class="nav-text">启动bitwarden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置nginx"><span class="nav-number">2.4.</span> <span class="nav-text">配置nginx</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置bitwarden"><span class="nav-number">3.</span> <span class="nav-text">配置bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#关闭注册"><span class="nav-number">3.0.1.</span> <span class="nav-text">关闭注册</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入数据"><span class="nav-number">3.0.2.</span> <span class="nav-text">导入数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两步登陆"><span class="nav-number">3.0.3.</span> <span class="nav-text">两步登陆</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跨平台app"><span class="nav-number">3.0.4.</span> <span class="nav-text">跨平台app</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#备份和恢复数据"><span class="nav-number">3.1.</span> <span class="nav-text">备份和恢复数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#备份数据"><span class="nav-number">3.1.1.</span> <span class="nav-text">备份数据</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#恢复数据"><span class="nav-number">3.1.2.</span> <span class="nav-text">恢复数据</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可选项"><span class="nav-number">3.2.</span> <span class="nav-text">可选项</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#使用其他数据库"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用其他数据库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#开启SMTP"><span class="nav-number">3.2.2.</span> <span class="nav-text">开启SMTP</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-number">4.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href ="/">
+    <img class="site-author-image" itemprop="image" alt="且听风吟"
+      src="https://i.loli.net/2021/01/09/jr2Q7lsXCcgRKvu.png">
+  </a>
+  <p class="site-author-name" itemprop="name">且听风吟</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:proxychain4@gmail.com" title="E-Mail → mailto:proxychain4@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/t.me/saltfishh" title="telegram → t.me&#x2F;saltfishh"><i class="fab fa-telegram fa-fw"></i>telegram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-anchor"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">且听风吟</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">40k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">37 分钟</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0edd9f47974ca6725ff9',
+      clientSecret: 'a4ce189a340061ceb9bffbf2d77ac1785ecd7565',
+      repo        : 'blog-comments',
+      owner       : 'saltfishh',
+      admin       : ['saltfishh'],
+      id          : 'f200109a24aa36d968b945ae373207e0',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

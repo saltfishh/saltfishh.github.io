@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32-32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Consolas:300,300italic,400,400italic,700,700italic|Consloas:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.hearthewind.top","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"yes","style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="人生苦短我用Arch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RE：从零开始的ArchLinux">
+<meta property="og:url" content="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117ad825fa2/index.html">
+<meta property="og:site_name" content="且听风吟">
+<meta property="og:description" content="人生苦短我用Arch">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/M6uaOKsbDFq5GZB.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/g9MrsUycQ2w3hbP.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/bmLqgMBUe64GY8R.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/UMI2DB4VPywhlnT.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/28fga5DFAuYx7m3.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/uTGfl6PwjrxenOd.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/miytkcEua5dw82z.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/L7JSP2Ugz3cYNFn.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/HzNoumvSTgUWZcn.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/TjxgvVaHQY8pctE.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/ebQCkDKXaw8JgWv.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/Zm3rKDwvPF5W2Te.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/rcaYepLlPNKxSkJ.png">
+<meta property="og:image" content="https://i.loli.net/2020/12/01/Bg2aCz8Kl5J3FUo.png">
+<meta property="og:image" content="https://i.loli.net/2020/07/15/ufkMb2nF3qR61E9.png">
+<meta property="article:published_time" content="2020-06-02T02:18:37.000Z">
+<meta property="article:modified_time" content="2021-01-04T02:47:30.677Z">
+<meta property="article:author" content="且听风吟">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="gnome">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/07/15/M6uaOKsbDFq5GZB.png">
+
+<link rel="canonical" href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117ad825fa2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>RE：从零开始的ArchLinux | 且听风吟</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'G-Q8JH2W2VFH',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?674bfad7a291414dce011bb7e25c1666";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">且听风吟</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">0 error，0 warning</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117ad825fa2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://i.loli.net/2021/01/09/jr2Q7lsXCcgRKvu.png">
+      <meta itemprop="name" content="且听风吟">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="且听风吟">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          RE：从零开始的ArchLinux
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-06-02 10:18:37" itemprop="dateCreated datePublished" datetime="2020-06-02T10:18:37+08:00">2020-06-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-01-04 10:47:30" itemprop="dateModified" datetime="2021-01-04T10:47:30+08:00">2021-01-04</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+            <div class="post-description">人生苦短我用Arch</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="RE：从零开始的ArchLinux"><a href="#RE：从零开始的ArchLinux" class="headerlink" title="RE：从零开始的ArchLinux"></a>RE：从零开始的ArchLinux</h1><h2 id="开始前的准备"><a href="#开始前的准备" class="headerlink" title="开始前的准备"></a>开始前的准备</h2><h3 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h3><ul>
+<li><p><a href="http://mirrors.zju.edu.cn/archlinux/iso/" target="_blank" rel="noopener">下载</a>archLinux镜像</p>
+</li>
+<li><p>一般下载最新的。由于无法避免丢包等现象，下载完务必校验下载下来的镜像和官网上哈希值是否一致</p>
+</li>
+<li><h3 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h3><ol>
+<li><a href="https://rufus.ie/" target="_blank" rel="noopener">下载</a>。打开后选择U盘和镜像，磁盘分区格式/引导分区根据实际情况选择mbr/gpt和bios/uefi.</li>
+<li>点击start，写入镜像.如果有弹窗提示,选择dd模式写入.</li>
+<li>写入完成之后要安装的电脑插上U盘重启按F12/F11选择U盘启动.</li>
+</ol>
+</li>
+<li><h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><ul>
+<li>插入U盘查看U盘卷名</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>使用dd将镜像写入u盘</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dd <span class="keyword">if</span>=~/Documents/resources/archlinux.iso of=/dev/sda</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>等待写入完成,电脑从U盘启动.<img src="https://i.loli.net/2020/07/15/M6uaOKsbDFq5GZB.png" alt="image-20200714041002649"></li>
+</ul>
+<ol start="4">
+<li>选择第一个,boot archlinux</li>
+</ol>
+</li>
+</ul>
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h3><ol>
+<li><p>查看当前硬盘及挂载情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png" alt="image-20200714041219763"></p>
+<p><img src="https://i.loli.net/2020/07/15/9YChTadAVLE2SBx.png" alt="image-20200714041219763"></p>
+</li>
+<li><p>对目标磁盘进行分区格式化.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cgdisk /dev/sda</span><br></pre></td></tr></table></figure>
+
+<p>←→键选择new在磁盘sda上创建分区.<br>首先创建boot分区.first sector默认就行,size in sectors 输入+128M,意为创建128M的分区.<img src="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png" alt="image-20200714041443514"></p>
+<p>←→键选择new在磁盘sda上创建分区.<br>首先创建boot分区.first sector默认就行,size in sectors 输入+128M,意为创建128M的分区.<img src="https://i.loli.net/2020/07/15/D1iQIvUyPnjlVb2.png" alt="image-20200714041443514"></p>
+</li>
+<li><p>接下来选择分区格式,linux efi格式代码为ef00,也可以输入L查看更多.<img src="https://i.loli.net/2020/07/15/g9MrsUycQ2w3hbP.png" alt="image-20200714041640116"><br>输入分区名 boot<br>分区名为boot格式为linux efi的分区就创建好了<br><img src="https://i.loli.net/2020/07/15/bmLqgMBUe64GY8R.png" alt="image-20200714041718721"><br>接着选择剩余的39G的空余空间创建/分区.<br>操作和之前一样,不过firest sector还是默认,size in sector那里根据自己需求来划分,我全部划给了/分区,就直接按了回车. /分区格式ext4,代码为默认的8300.</p>
+</li>
+</ol>
+<p>分区完成之后就是这样<br><img src="https://i.loli.net/2020/07/15/UMI2DB4VPywhlnT.png" alt="image-20200714041759703"><br>选择write进行写入.</p>
+<h3 id="硬盘格式化"><a href="#硬盘格式化" class="headerlink" title="硬盘格式化"></a>硬盘格式化</h3><p>使用lsblk查看硬盘挂载情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk</span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到128M的boot分区名对应着/dev/sda1,/分区对应着/dev/sda1<br><img src="https://i.loli.net/2020/07/15/28fga5DFAuYx7m3.png" alt="image-20200714041928644"></p>
+<ul>
+<li><p>格式化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 /dev/sda2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.fat -F32 /dev/sda1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>挂载 / 分区到/mnt</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sda2 /mnt</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h3 id="安装archlinux"><a href="#安装archlinux" class="headerlink" title="安装archlinux"></a>安装archlinux</h3><h4 id="换源"><a href="#换源" class="headerlink" title="换源"></a>换源</h4><blockquote>
+<p>文件 <code>/etc/pacman.d/mirrorlist</code> 定义了软件包会从哪个<a href="https://wiki.archlinux.org/index.php/Mirrors" target="_blank" rel="noopener">镜像源</a>下载</p>
+</blockquote>
+<p>使用echo和&gt;修改镜像配置文件.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch'</span> &gt; /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/pacman.d/mirorrlist	<span class="comment">#查看镜像配置文件</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/15/uTGfl6PwjrxenOd.png" alt="image-20200714042441073"></p>
+<p>可以看到镜像文件已经修改成了阿里源.</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacstrap /mnt base linux linux-firmware</span><br></pre></td></tr></table></figure>
+
+
+
+<blockquote>
+<p>这条命令将从pacmanlist中的源下载并将archlinux安装到/mnt</p>
+<p>由于安装是的archlinx正常运行的基本包,所以并不包含以下软件包</p>
+<ul>
+<li><p>管理所用<a href="https://wiki.archlinux.org/index.php/File_systems" target="_blank" rel="noopener">文件系统</a>的用户工具</p>
+</li>
+<li><p>访问 <a href="https://wiki.archlinux.org/index.php/RAID" target="_blank" rel="noopener">RAID</a> 或 <a href="https://wiki.archlinux.org/index.php/LVM" target="_blank" rel="noopener">LVM</a> 分区的工具</p>
+</li>
+<li><p>含在 <a href="https://www.archlinux.org/packages/?name=linux-firmware" target="_blank" rel="noopener">linux-firmware</a> 中的额外固件</p>
+</li>
+<li><p><a href="https://wiki.archlinux.org/index.php/Networking" target="_blank" rel="noopener">联网</a>需要的程序</p>
+</li>
+<li><p><a href="https://wiki.archlinux.org/index.php/Text_editor" target="_blank" rel="noopener">文本编辑器</a>.</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>等他联网下载安装</li>
+</ul>
+<p><img src="https://i.loli.net/2020/07/15/miytkcEua5dw82z.png" alt="image-20200714042557060"></p>
+<p>到这一步就说明系统安装完毕了.</p>
+<p><img src="https://i.loli.net/2020/07/15/L7JSP2Ugz3cYNFn.png" alt="image-20200714042941017"></p>
+<p>我们开始进行下一步</p>
+<h2 id="配置系统"><a href="#配置系统" class="headerlink" title="配置系统"></a>配置系统</h2><p>等安装完成之后，进行archlinux的配置。</p>
+<ul>
+<li><p>生成fstab文件</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genfstab -U <span class="regexp">/mnt &gt;&gt; /m</span>nt<span class="regexp">/etc/</span>fstab</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>fstab文件可用于定义磁盘分区，各种其他块设备或远程文件系统应如何装入文件系统。</p>
+</blockquote>
+</li>
+<li><p>换镜像源</p>
+<ul>
+<li>由于之前已经修改过了live盘里的镜像配置，所以使用 &gt; 重定向就可以了</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/pacman.d/mirrorlist &gt; /mnt/etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>切换到新安装的archlinux系统（我们目前还是在live模式下面操作）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>aur源</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman -S vim <span class="comment">#默认的是没安装vim的,所以需要安装一下</span></span><br><span class="line">vim /etc/pacman.conf</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>在行末添加</p>
+<p>[archlinuxcn]</p>
+<p>SigLevel = Optional TrustAll</p>
+<p>Server = <a href="http://repo.archlinux.org/$arch" target="_blank" rel="noopener">http://repo.archlinux.org/$arch</a></p>
+</blockquote>
+<ul>
+<li>配置完后刷新下数据库</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -Syu</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="时区和时间"><a href="#时区和时间" class="headerlink" title="时区和时间"></a>时区和时间</h3><ul>
+<li>设置时间，亚洲，上海</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地化"><a href="#本地化" class="headerlink" title="本地化"></a>本地化</h3><ul>
+<li><p>本地化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/locale.gen</span><br></pre></td></tr></table></figure>
+
+<p>将 zh_CN.UTF-8 和en_US.UTF-8取消注释</p>
+<blockquote>
+<p>本地化的程序与库若要本地化文本，都依赖 <a href="https://wiki.archlinux.org/index.php/Locale" target="_blank" rel="noopener">Locale</a>，后者明确规定地域、货币、时区日期的格式、字符排列方式和其他本地化标准等等。在下面两个文件设置：<code>locale.gen</code> 与 <code>locale.conf</code>。</p>
+</blockquote>
+<blockquote>
+<p>编辑<code>/etc/locale.gen</code> 然后移除需要的<a href="https://wiki.archlinux.org/index.php/Locale_(简体中文)" target="_blank" rel="noopener">地区</a>的注释。</p>
+</blockquote>
+</li>
+<li><p>生成本地化配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locale-gen</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">'LANG=zh_CN.UTF-8'</span> &gt; /etc/locale.conf</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><p>由于只安装了基本包，所以目前的archlinux是没有网络连接的，接下来安装网络工具包。</p>
+<ul>
+<li>安装网络管理工具</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>网络管理器</th>
+<th>GUI</th>
+<th><a href="https://wiki.archlinux.org/index.php/Archiso_(简体中文)" target="_blank" rel="noopener">Archiso (简体中文)</a> <a href="https://git.archlinux.org/archiso.git/tree/configs/releng/packages.x86_64" target="_blank" rel="noopener">[3]</a></th>
+<th>CLI 工具</th>
+<th><a href="https://zh.wikipedia.org/wiki/点对点协议" target="_blank" rel="noopener">点对点协议</a> 支持  (e.g. 3G modem)</th>
+<th><a href="https://wiki.archlinux.org/index.php/Network_configuration_(简体中文)#DHCP" target="_blank" rel="noopener">DHCP 客户端</a></th>
+<th>Systemd units</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="https://wiki.archlinux.org/index.php/ConnMan" target="_blank" rel="noopener">ConnMan</a></td>
+<td>8 unofficial</td>
+<td>No</td>
+<td><a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/connmanctl.1" target="_blank" rel="noopener">connmanctl(1)</a></td>
+<td>Yes (with <a href="https://aur.archlinux.org/packages/ofono/" target="_blank" rel="noopener">ofono</a>AUR)</td>
+<td>内置</td>
+<td><code>connman.service</code></td>
+</tr>
+<tr>
+<td><a href="https://wiki.archlinux.org/index.php/NetworkManager_(简体中文)" target="_blank" rel="noopener">NetworkManager</a></td>
+<td>Yes</td>
+<td>No</td>
+<td><a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/nmcli.1" target="_blank" rel="noopener">nmcli(1)</a>, <a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/nmtui.1" target="_blank" rel="noopener">nmtui(1)</a></td>
+<td>Yes</td>
+<td>internal, <a href="https://wiki.archlinux.org/index.php/Dhcpcd_(简体中文)" target="_blank" rel="noopener">dhcpcd</a> 或 <a href="https://www.archlinux.org/packages/?name=dhclient" target="_blank" rel="noopener">dhclient</a></td>
+<td><code>NetworkManager.service</code></td>
+</tr>
+<tr>
+<td><a href="https://wiki.archlinux.org/index.php/Netctl_(简体中文)" target="_blank" rel="noopener">netctl</a></td>
+<td>2 unofficial</td>
+<td>Yes</td>
+<td><a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/netctl.1" target="_blank" rel="noopener">netctl(1)</a>, wifi-menu</td>
+<td>Yes</td>
+<td><a href="https://wiki.archlinux.org/index.php/Dhcpcd_(简体中文)" target="_blank" rel="noopener">dhcpcd</a> 或 <a href="https://www.archlinux.org/packages/?name=dhclient" target="_blank" rel="noopener">dhclient</a></td>
+<td><code>netctl-ifplugd@*interface*.service</code>, <code>netctl-auto@*interface*.service</code></td>
+</tr>
+<tr>
+<td><a href="https://wiki.archlinux.org/index.php/Systemd-networkd_(简体中文)" target="_blank" rel="noopener">systemd-networkd</a></td>
+<td>No</td>
+<td>Yes (<a href="https://www.archlinux.org/packages/?name=base" target="_blank" rel="noopener">base</a>)</td>
+<td><a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/networkctl.1" target="_blank" rel="noopener">networkctl(1)</a></td>
+<td><a href="https://github.com/systemd/systemd/issues/481" target="_blank" rel="noopener">No</a></td>
+<td>内置</td>
+<td><code>systemd-networkd.service</code>, <code>systemd-resolved.service</code></td>
+</tr>
+<tr>
+<td><a href="https://wiki.archlinux.org/index.php/Wicd_(简体中文)" target="_blank" rel="noopener">Wicd</a></td>
+<td>Yes</td>
+<td>No</td>
+<td><a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/wicd-cli.8" target="_blank" rel="noopener">wicd-cli(8)</a>[<a href="https://en.wikipedia.org/wiki/Wikipedia:Link_rot" target="_blank" rel="noopener">dead link</a> 2020-02-22], <a href="https://jlk.fjfi.cvut.cz/arch/manpages/man/wicd-curses.8" target="_blank" rel="noopener">wicd-curses(8)</a>[<a href="https://en.wikipedia.org/wiki/Wikipedia:Link_rot" target="_blank" rel="noopener">dead link</a> 2020-02-22]</td>
+<td>No</td>
+<td><a href="https://wiki.archlinux.org/index.php/Dhcpcd_(简体中文)" target="_blank" rel="noopener">dhcpcd</a></td>
+<td><code>wicd.service</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>有许多可选的方案，但他们都相互排斥，因此不要同时运行两个守护程序</p>
+<p>以上网络工具选一个安装即可</p>
+</blockquote>
+<blockquote>
+<p>当然了,某些包可能会冲突,最好根据自己的需求来安装.</p>
+<p>比如我桌面是gnome,NetworkManager已经集成了dhcp服务,此时再安装dhcpcd就会冲突.</p>
+</blockquote>
+<ul>
+<li>修改主机名</li>
+</ul>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">hostnamectl </span><span class="built_in">set-hostname</span> <span class="string">charons</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>将以下内容写入hosts文件</p>
+<p>127.0.0.1    localhost.localdomain    localhost     chaorns<br>::1        localhost.localdomain    localhost     charons</p>
+</blockquote>
+<h3 id="用户设置"><a href="#用户设置" class="headerlink" title="用户设置"></a>用户设置</h3><ul>
+<li><p>设置root密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd root</span><br></pre></td></tr></table></figure>
+
+<p>根据需求输入密码。</p>
+</li>
+<li><p>创建用户</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -m -G wheel wind</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建wind用户，并在/home下创建wind用户的home主目录，将其加入wheel组。关于wheel组：</p>
+<p>wheel 组的概念继承自 UNIX。当服务器需要进行一些日常系统管理员无法执行的高级维护时，往往就要用到 root  权限；而“wheel” 组就是一个包含这些特殊权限的用户池；也就是说，如果你不是“wheel”组的成员，就无法取得 root  权限进行一些特权的操作；</p>
+</blockquote>
+<p>给新创建的用户设置密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd wind</span><br></pre></td></tr></table></figure>
+
+<p>普通用户加入whell后才能申请使用root权限，想要普通用户以root身份执行某个命令还需要安装sudo这个包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pacman -S sudo</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sudoer</span><br></pre></td></tr></table></figure>
+
+<p>找到root ALL (ALL)=ALL这一行，下面添加一行：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">wind</span> <span class="string">ALL(ALL)=ALL</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成之后切换到普通用户，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su wind</span><br></pre></td></tr></table></figure>
+
+<p>以后想要普通用户使用root权限的时候，命令前面加上 <strong>sudo</strong> 就可以啦，比如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -Syu</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://i.loli.net/2020/07/15/HzNoumvSTgUWZcn.png" alt="image-20200715061303031"></p>
+</li>
+</ul>
+<h3 id="安装引导程序"><a href="#安装引导程序" class="headerlink" title="安装引导程序"></a>安装引导程序</h3><p>以grub为例,在boot文件夹里创建efi文件夹，再切换到arch live盘，将之前格式化好的boot分区挂载到 /mnt/boot/efi下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /boot/efi</span><br><span class="line"><span class="built_in">exit</span></span><br><span class="line">mount /dev/sda1 /mnt/boot/efi</span><br></pre></td></tr></table></figure>
+
+<p>再切换到/mnt下安装好的archlinux,安装grub</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arch-chroot /mnt</span><br><span class="line">pacman -S grub</span><br><span class="line">pacman -S efibootmgr</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>安装grub到boot/efi</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于bios启动而非efi，则不用分efi分区</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-install --target=i386-pc /dev/sda</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grub-mkconfig -o /boot/grub/grub.cfg	<span class="comment">#生成grub.cfg文件</span></span><br></pre></td></tr></table></figure>
+
+<p>生成grub.cfg之后arch的安装就结束了，拔掉U盘退出/mnt下的系统，<strong>reboot</strong>之后就能进入新安装的archlinux了。</p>
+<p><img src="https://i.loli.net/2020/07/15/TjxgvVaHQY8pctE.png" alt="image-20200714204315024"></p>
+<p>登录</p>
+<p><img src="https://i.loli.net/2020/07/15/ebQCkDKXaw8JgWv.png" alt="image-20200714204352600"></p>
+<h2 id="安装桌面"><a href="#安装桌面" class="headerlink" title="安装桌面"></a>安装桌面</h2><p>当然了,只有命令行肯定是不够用的,安装一个桌面是必要的.</p>
+<p>桌面有很多选择,比如轻量级的xfce,对系统要求稍高的gnome,以美化著称的dde,比较折腾的i3…这里以gnome为例,记录一下安装过程</p>
+<h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><p>1.安装Xorg</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xorg-server xorg-xinit</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Xorg （通常简称为 X）在 Linux 用户中非常流行，已经成为图形用户程序的必备条件，所以大部分发行版都提供了它。详情参见 <a href="https://en.wikipedia.org/wiki/X.Org_Server" target="_blank" rel="noopener">Xorg</a> 维基文章或访问<a href="http://www.x.org/wiki/" target="_blank" rel="noopener">Xorg 网站</a>。</p>
+</blockquote>
+<p>2.安装显卡驱动</p>
+<blockquote>
+<p>要充分发挥显卡性能，请按下表安装驱动程序。推荐先使用开源驱动，这些驱动出问题的可能性较小</p>
+</blockquote>
+<p><img src="https://i.loli.net/2020/12/01/Zm3rKDwvPF5W2Te.png" alt="image-20201201103521214"></p>
+<ul>
+<li>自行根据显卡型号安装对应的驱动,比如我的是AMD RX590,安装开源驱动</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S xf86-video-amdgpu</span><br></pre></td></tr></table></figure>
+
+<p>3.安装gnome和扩展工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gnome gnome-tweaks</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装gdm"><a href="#安装gdm" class="headerlink" title="安装gdm"></a>安装gdm</h3><blockquote>
+<p>来自<a href="https://wiki.gnome.org/Projects/GDM" target="_blank" rel="noopener">GDM - GNOME显示管理器</a>：“GNOME显示管理器（GDM）是一个管理图形显示服务和处理图形用户登录的程序</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S gdm</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> gdm</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>至此桌面环境已经安装完毕了,可以重启,也可以手动启动gdm</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start gdm</span><br></pre></td></tr></table></figure>
+
+<h2 id="美化及必要的软件安装"><a href="#美化及必要的软件安装" class="headerlink" title="美化及必要的软件安装"></a>美化及必要的软件安装</h2><ul>
+<li>进入桌面后开始安装一些必要的软件和桌面配置</li>
+</ul>
+<h3 id="开启网络服务"><a href="#开启网络服务" class="headerlink" title="开启网络服务"></a>开启网络服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start NetworkManager</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>静态ip</li>
+</ul>
+<p><a href="https://wiki.archlinux.org/index.php/NetworkManager_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%9D%99%E6%80%81_IP_%E8%AE%BE%E7%BD%AE_%E5%8F%98%E6%88%90_DHCP" target="_blank" rel="noopener">wiki</a>上给出了<code>nkcli</code>很详细的用法,不过感觉有点繁琐,我这里使用<a href="https://blog.charons.work/2020/06/22/netctl%E9%9D%99%E6%80%81ip/" target="_blank" rel="noopener">netctl</a>来使用静态ip</p>
+<h3 id="安装输入法"><a href="#安装输入法" class="headerlink" title="安装输入法"></a>安装输入法</h3><p>1.安装输入法包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S  fcitx5-im fcitx5-qt	fcitx5-chinese-addons</span><br></pre></td></tr></table></figure>
+
+<p>2.环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.pam_environment</span><br><span class="line"></span><br><span class="line">INPUT_METHOD  DEFAULT=fcitx</span><br><span class="line">GTK_IM_MODULE DEFAULT=fcitx</span><br><span class="line">QT_IM_MODULE  DEFAULT=fcitx</span><br><span class="line">XMODIFIERS    DEFAULT=\@im=fcitx</span><br></pre></td></tr></table></figure>
+
+<p>配置完环境变量注销重登陆或者重启就可以了.然后按win键找到<code>fcitx5配置</code><img src="https://i.loli.net/2020/12/01/rcaYepLlPNKxSkJ.png" alt="image-20201201110057142"></p>
+<p>功能还是很强大的,可以根据自己的需求进行配置.</p>
+<h3 id="安装扩展"><a href="#安装扩展" class="headerlink" title="安装扩展"></a>安装扩展</h3><p>可以通过chrome来安装gnome扩展,当然也可以在github上下载下来手动安装,前者更方便一些.</p>
+<p>1.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S google-chrome</span><br><span class="line">sudo pacman -S gnome-shell-extensions</span><br></pre></td></tr></table></figure>
+
+<p>2.在chrome里安装gnome扩展</p>
+<ul>
+<li>打开<a href="https://chrome.google.com/webstore/detail/gnome-shell-integration/gphhapmejobijbbhgpjhcjognlahblep" target="_blank" rel="noopener">google商店</a>安装即可.</li>
+</ul>
+<ul>
+<li>打开<a href="https://extensions.gnome.org/" target="_blank" rel="noopener">gnome扩展官网</a>,搜索下载安装插件.</li>
+</ul>
+<p>装完大概就是这样,类似于mac那种.<img src="https://i.loli.net/2020/12/01/Bg2aCz8Kl5J3FUo.png" alt="image-20201201111558053"></p>
+<p>除此之外还有很多实用的扩展,比如</p>
+<ul>
+<li><p>openweather</p>
+<ul>
+<li>一个查看天气的扩展</li>
+</ul>
+</li>
+<li><p>vitals</p>
+<ul>
+<li>在panel查看cpu内存及网速</li>
+</ul>
+</li>
+<li><p>topicon plus</p>
+<ul>
+<li>托盘图标</li>
+</ul>
+</li>
+<li><p>GSConnect</p>
+<ul>
+<li>连接手机</li>
+</ul>
+</li>
+<li><p>dynamic panel transparent</p>
+<ul>
+<li>panel根据窗口是否吸附来实现动态透明</li>
+</ul>
+</li>
+</ul>
+<h3 id="安装主题和字体"><a href="#安装主题和字体" class="headerlink" title="安装主题和字体"></a>安装主题和字体</h3><ul>
+<li>字体,可以将字体文件放到<code>/usr/share/fonts</code>下,然后刷新字体缓存就可以了.</li>
+</ul>
+<blockquote>
+<p>要在系统范围内（对所有用户有效）安装字体，请将文件夹移动到 <code>/usr/share/fonts/</code> 目录。这些文件需要对每个用户而言都是可读的，使用 <a href="https://wiki.archlinux.org/index.php/Chmod" target="_blank" rel="noopener">chmod</a> 来设置合理的权限 (比如，文件至少为 <code>0444</code> ，而目录至少为 <code>0555</code>)。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">fc</span>-cache -vf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>主题</li>
+</ul>
+<p>将主题文件包移动到<code>/usr/share/themes</code>下,然后在<code>tweaks-tool</code>里的<strong>外观</strong>&gt;<strong>主题</strong>自行选择.</p>
+<p>当然,如果不知道使用哪个主题,我想你会在<a href="https://www.gnome-look.org/browse/cat/" target="_blank" rel="noopener">gnome-look</a>里找到喜欢的.</p>
+<h3 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h3><ul>
+<li>本来是想安装一直在用的透明gnome终端的,但是aur上貌似无法安装了,换tilix吧.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S tilix</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>tilix功能还是挺多的,自行探索配置文件和快捷键吧,用了会上瘾</p>
+</blockquote>
+<h3 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h3><p>1.首先安装zsh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S zsh</span><br></pre></td></tr></table></figure>
+
+<p>2.安装Oh-my-zsh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)</span>"</span></span><br></pre></td></tr></table></figure>
+
+<p>3.切换主题</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br><span class="line"></span><br><span class="line">ZSH_THEME=<span class="string">"agnoster"</span>	##找到这行,主题换成自己喜欢的</span><br></pre></td></tr></table></figure>
+
+<p>4.切换默认的shell</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s /bin/zsh</span><br></pre></td></tr></table></figure>
+
+<h3 id="网易云"><a href="#网易云" class="headerlink" title="网易云"></a>网易云</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S netease-cloud-music</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解锁网易云灰色歌曲可以参考我之前的<a href="https://blog.charons.work/2020/11/13/%E8%A7%A3%E9%94%81%E7%BD%91%E6%8A%91%E4%BA%91%E7%81%B0%E8%89%B2%E6%AD%8C%E5%8D%95/" target="_blank" rel="noopener">文章</a></li>
+</ul>
+<ul>
+<li>大概就这样吧.</li>
+</ul>
+<p>It’s Arch Time!</p>
+<p><img src="https://i.loli.net/2020/07/15/ufkMb2nF3qR61E9.png" alt="image-20200715054143716"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>且听风吟
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117ad825fa2/" title="RE：从零开始的ArchLinux">http://blog.hearthewind.top/posts/db1132b0-4e36-11eb-bbe3-c117ad825fa2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/gnome/" rel="tag"># gnome</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/posts/db1132b0-4e36-11eb-bbe3-c117a7825fc2/" rel="next" title="linux与windows之间进行文件传输">
+      linux与windows之间进行文件传输 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RE：从零开始的ArchLinux"><span class="nav-number">1.</span> <span class="nav-text">RE：从零开始的ArchLinux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开始前的准备"><span class="nav-number">1.1.</span> <span class="nav-text">开始前的准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#制作镜像"><span class="nav-number">1.1.1.</span> <span class="nav-text">制作镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows"><span class="nav-number">1.1.2.</span> <span class="nav-text">windows</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux"><span class="nav-number">1.1.3.</span> <span class="nav-text">linux</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始安装"><span class="nav-number">1.2.</span> <span class="nav-text">开始安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬盘分区"><span class="nav-number">1.2.1.</span> <span class="nav-text">硬盘分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬盘格式化"><span class="nav-number">1.2.2.</span> <span class="nav-text">硬盘格式化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装archlinux"><span class="nav-number">1.2.3.</span> <span class="nav-text">安装archlinux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#换源"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">换源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置系统"><span class="nav-number">1.3.</span> <span class="nav-text">配置系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#时区和时间"><span class="nav-number">1.3.1.</span> <span class="nav-text">时区和时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地化"><span class="nav-number">1.3.2.</span> <span class="nav-text">本地化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络配置"><span class="nav-number">1.3.3.</span> <span class="nav-text">网络配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户设置"><span class="nav-number">1.3.4.</span> <span class="nav-text">用户设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装引导程序"><span class="nav-number">1.3.5.</span> <span class="nav-text">安装引导程序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装桌面"><span class="nav-number">1.4.</span> <span class="nav-text">安装桌面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装组件"><span class="nav-number">1.4.1.</span> <span class="nav-text">安装组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装gdm"><span class="nav-number">1.4.2.</span> <span class="nav-text">安装gdm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美化及必要的软件安装"><span class="nav-number">1.5.</span> <span class="nav-text">美化及必要的软件安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启网络服务"><span class="nav-number">1.5.1.</span> <span class="nav-text">开启网络服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装输入法"><span class="nav-number">1.5.2.</span> <span class="nav-text">安装输入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装扩展"><span class="nav-number">1.5.3.</span> <span class="nav-text">安装扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装主题和字体"><span class="nav-number">1.5.4.</span> <span class="nav-text">安装主题和字体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终端"><span class="nav-number">1.5.5.</span> <span class="nav-text">终端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">1.5.6.</span> <span class="nav-text">oh-my-zsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网易云"><span class="nav-number">1.5.7.</span> <span class="nav-text">网易云</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a href ="/">
+    <img class="site-author-image" itemprop="image" alt="且听风吟"
+      src="https://i.loli.net/2021/01/09/jr2Q7lsXCcgRKvu.png">
+  </a>
+  <p class="site-author-name" itemprop="name">且听风吟</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:proxychain4@gmail.com" title="E-Mail → mailto:proxychain4@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/t.me/saltfishh" title="telegram → t.me&#x2F;saltfishh"><i class="fab fa-telegram fa-fw"></i>telegram</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-anchor"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">且听风吟</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">40k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">37 分钟</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '0edd9f47974ca6725ff9',
+      clientSecret: 'a4ce189a340061ceb9bffbf2d77ac1785ecd7565',
+      repo        : 'blog-comments',
+      owner       : 'saltfishh',
+      admin       : ['saltfishh'],
+      id          : '6b298b3680918a953187c789c48b13dc',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
