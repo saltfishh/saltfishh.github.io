@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32-32.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico.ico">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -280,9 +280,9 @@
 <p>OpenWrt 可以被描述为一个嵌入式的 <a href="https://baike.baidu.com/item/Linux/27050" target="_blank" rel="noopener">Linux</a> 发行版。（主流路由器固件有 <a href="https://baike.baidu.com/item/dd-wrt/10381248" target="_blank" rel="noopener">dd-wrt</a>,<a href="https://baike.baidu.com/item/tomato/19664207" target="_blank" rel="noopener">tomato</a>,openwrt,padavan四类）对比一个单一的、静态的系统，OpenWrt的包管理提供了一个完全可写的文件系统，从应用程序供应商提供的选择和配置，并允许您自定义的设备，以适应任何应用程序。</p>
 </blockquote>
 <h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><pre><code>- 请勿用root用户进行编译
-- 编译的时候全局科学上网</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S --needed asciidoc bash bc binutils bzip2 fastjar flex git gcc util-linux gawk intltool zlib make cdrkit ncurses openssl patch perl-extutils-makemaker rsync unzip wget gettext libxslt boost libusb bin86 sharutils b43-fwcutter findutils time	<span class="hljs-comment">##安装所需依赖</span><br>git <span class="hljs-built_in">clone</span> https://github.com/coolsnowwolf/lede<br><span class="hljs-built_in">cd</span> lede <span class="hljs-comment">##进入项目目录</span><br>./scripts/feeds update -a<br>./scripts/feeds install -a<br>vim feeds.conf.default	<span class="hljs-comment">##编辑软件源,这项很重要.ssrplus是默认注释掉的,取消注释后openwrt app选项里才能购选ssrplus</span><br></code></pre></td></tr></table></figure>
+- 编译的时候全局科学上网</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S --needed asciidoc bash bc binutils bzip2 fastjar flex git gcc util-linux gawk intltool zlib make cdrkit ncurses openssl patch perl-extutils-makemaker rsync unzip wget gettext libxslt boost libusb bin86 sharutils b43-fwcutter findutils time	<span class="comment">##安装所需依赖</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/coolsnowwolf/lede</span><br><span class="line"><span class="built_in">cd</span> lede <span class="comment">##进入项目目录</span></span><br><span class="line">./scripts/feeds update -a</span><br><span class="line">./scripts/feeds install -a</span><br><span class="line">vim feeds.conf.default	<span class="comment">##编辑软件源,这项很重要.ssrplus是默认注释掉的,取消注释后openwrt app选项里才能购选ssrplus</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="配置菜单"><a href="#配置菜单" class="headerlink" title="配置菜单"></a>配置菜单</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">make menuconfig<br></code></pre></td></tr></table></figure>
+<h4 id="配置菜单"><a href="#配置菜单" class="headerlink" title="配置菜单"></a>配置菜单</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make menuconfig</span><br></pre></td></tr></table></figure>
 
 <p>然后会出现一个页面,是要编译的openwrt项目的配置选项.</p>
 <p><img src="https://i.loli.net/2020/10/30/fFurOieKW1EMchq.png" alt="image-20201030172606895"></p>
@@ -295,12 +295,12 @@
 <ul>
 <li>选择完成之后点save保存.</li>
 </ul>
-<h4 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">make -j8 download V=s	<span class="hljs-comment">#载dl库</span><br>make -j1 V=s  <span class="hljs-comment">#-j1 后面是线程数。第一次编译推荐用单线程.文档上说最好第一次编译单线程,不过我第一次编译12线程,也没啥问题.第一次比较慢,耐心等待.）</span><br></code></pre></td></tr></table></figure>
+<h4 id="开始编译"><a href="#开始编译" class="headerlink" title="开始编译"></a>开始编译</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make -j8 download V=s	<span class="comment">#载dl库</span></span><br><span class="line">make -j1 V=s  <span class="comment">#-j1 后面是线程数。第一次编译推荐用单线程.文档上说最好第一次编译单线程,不过我第一次编译12线程,也没啥问题.第一次比较慢,耐心等待.）</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="二次编译"><a href="#二次编译" class="headerlink" title="二次编译"></a>二次编译</h4><ul>
 <li>如果发现需要用到某些组件但是上次没有加进去,需要重新修改配置文件然后再编译,第二次就很快了</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">git pull<br>./scripts/feeds update -a &amp;&amp; ./scripts/feeds install -a	<span class="hljs-comment">##更新</span><br>make defconfig<br>make -j8 download<br>rm -rf ./tmp &amp;&amp; rm -rf .config<br>make menuconfig<br>make -j1 V=s<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br><span class="line">./scripts/feeds update -a &amp;&amp; ./scripts/feeds install -a	<span class="comment">##更新</span></span><br><span class="line">make defconfig</span><br><span class="line">make -j8 download</span><br><span class="line">rm -rf ./tmp &amp;&amp; rm -rf .config</span><br><span class="line">make menuconfig</span><br><span class="line">make -j1 V=s</span><br></pre></td></tr></table></figure>
 
 <h4 id="编译完成"><a href="#编译完成" class="headerlink" title="编译完成"></a>编译完成</h4><ul>
 <li>编译完成后的输出文件在/lede/bin/targets下面,里面包含了镜像文件和虚拟机文件,可以直接导入到vmware或vmbox里面.</li>
@@ -312,7 +312,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dd <span class="hljs-keyword">if</span>=xxx.img of=/dev/sdx<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd <span class="keyword">if</span>=xxx.img of=/dev/sdx</span><br></pre></td></tr></table></figure>
 
 <h3 id="树梅派的配置"><a href="#树梅派的配置" class="headerlink" title="树梅派的配置"></a>树梅派的配置</h3><ul>
 <li>将写入镜像的tf卡插入树梅派通电开机,如果操作没错的话应该是下面这个界面.</li>
@@ -322,7 +322,7 @@
 <h4 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h4><ul>
 <li>编辑openwrt的网卡设置</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">vi /etc/config/network<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/config/network</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>openwrt默认的ip是192.168.1.1,将他改为与你主机在同一个网段即可.如192.168.31.254</li>

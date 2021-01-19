@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.1">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32-32.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16-16.ico.ico">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -264,17 +264,17 @@
 <li>能使用脚本查询ip的网站有很多,比如<code>myip.ipip.net</code>,<code>ip.sb</code></li>
 </ul>
 <p>这里用myip.ipip.net举例</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl myipip.net<br>当前 IP：222.**.**.**  来自于：中国 北京 北京 电信<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl myipip.net</span><br><span class="line">当前 IP：222.**.**.**  来自于：中国 北京 北京 电信</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>返回结果中带有汉字字符,使用<code>grep</code>过滤掉就行了</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl myip.ipip.net | grep -o <span class="hljs-string">"[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]"</span> <br>222.*.*.*<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl myip.ipip.net | grep -o <span class="string">"[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]"</span> </span><br><span class="line">222.*.*.*</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>将输出结果重定向到文件,想读取的时候直接读取文件即可.</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl myip.ipip.net | grep -o <span class="hljs-string">"[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]"</span>  &gt; /home/conf/ip<br>cat ip<br>222.*.*.*<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl myip.ipip.net | grep -o <span class="string">"[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]"</span>  &gt; /home/conf/ip</span><br><span class="line">cat ip</span><br><span class="line">222.*.*.*</span><br></pre></td></tr></table></figure>
 
 <h4 id="创建定时任务"><a href="#创建定时任务" class="headerlink" title="创建定时任务"></a>创建定时任务</h4><ul>
 <li>使用<code>cron</code>创建定时任务,定时获取ip,写入文件.</li>
@@ -285,14 +285,14 @@
 <blockquote>
 <p>cron 有多个实现程序,我使用的cronie</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo pacman -S cronie<br>sudo systemctl <span class="hljs-built_in">enable</span> cronie<br>sudo systemctl start cronie<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo pacman -S cronie</span><br><span class="line">sudo systemctl <span class="built_in">enable</span> cronie</span><br><span class="line">sudo systemctl start cronie</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>接下来创建定时任务</li>
 </ul>
 <blockquote>
 <p>crontab 的基本格式是：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-section">&lt;分钟&gt;</span> <span class="hljs-section">&lt;小时&gt;</span> <span class="hljs-section">&lt;日&gt;</span> <span class="hljs-section">&lt;月份&gt;</span> <span class="hljs-section">&lt;星期&gt;</span> <span class="hljs-section">&lt;命令&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;分钟&gt;</span> <span class="section">&lt;小时&gt;</span> <span class="section">&lt;日&gt;</span> <span class="section">&lt;月份&gt;</span> <span class="section">&lt;星期&gt;</span> <span class="section">&lt;命令&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><em>分钟</em> 值从 0 到 59.</li>
@@ -330,12 +330,12 @@
 <ul>
 <li>下面是crontab的用法</li>
 </ul>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">crontab</span> -e	<span class="hljs-comment">#编辑定时任务</span><br>crontab -l 	<span class="hljs-comment">#查看定时任务列表</span><br>crontab -d 	<span class="hljs-comment">#删除定时任务</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">crontab</span> -e	<span class="comment">#编辑定时任务</span></span><br><span class="line">crontab -l 	<span class="comment">#查看定时任务列表</span></span><br><span class="line">crontab -d 	<span class="comment">#删除定时任务</span></span><br></pre></td></tr></table></figure>
 
 <p>比如下面的命令代表每月的第2到第3周的第2,第5天和第8,第10天的每3分钟执行run命令</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">*/<span class="hljs-number">3</span> * <span class="hljs-number">2</span>-<span class="hljs-number">5</span>,<span class="hljs-number">8</span>-<span class="hljs-number">10</span> <span class="hljs-number">2</span>-<span class="hljs-number">3</span> * /usr/bin/run<br></code></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/<span class="number">3</span> * <span class="number">2</span>-<span class="number">5</span>,<span class="number">8</span>-<span class="number">10</span> <span class="number">2</span>-<span class="number">3</span> * /usr/bin/run</span><br></pre></td></tr></table></figure>
 
-<h4 id="定时写入文件"><a href="#定时写入文件" class="headerlink" title="定时写入文件"></a>定时写入文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">*/3 * * * * /usr/bin/sed -i <span class="hljs-string">"1s/.*/<span class="hljs-variable">$( curl -4 myip.ipip.net | grep -o "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]")</span>/g"</span> /home/wind/conf/ip &amp;&amp; /usr/bin/sed -i <span class="hljs-string">"2s/.*/<span class="hljs-variable">$(proxychains curl -4 myip.ipip.net | grep -o "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]")</span>/g"</span> /home/windconf/ip<br></code></pre></td></tr></table></figure>
+<h4 id="定时写入文件"><a href="#定时写入文件" class="headerlink" title="定时写入文件"></a>定时写入文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*/3 * * * * /usr/bin/sed -i <span class="string">"1s/.*/<span class="variable">$( curl -4 myip.ipip.net | grep -o "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]")</span>/g"</span> /home/wind/conf/ip &amp;&amp; /usr/bin/sed -i <span class="string">"2s/.*/<span class="variable">$(proxychains curl -4 myip.ipip.net | grep -o "[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]")</span>/g"</span> /home/windconf/ip</span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>sed -i</p>
