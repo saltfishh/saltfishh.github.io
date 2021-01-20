@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/19/ph7DicUuPjlGn8z.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/19/JtATyDceMKOXu5Q.png">
 <meta property="article:published_time" content="2021-01-04T02:45:07.000Z">
-<meta property="article:modified_time" content="2021-01-18T22:57:53.057Z">
+<meta property="article:modified_time" content="2021-01-20T15:50:47.913Z">
 <meta property="article:author" content="且听风吟">
 <meta property="article:tag" content="password">
 <meta property="article:tag" content="bitwarden">
@@ -227,7 +227,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-01-19 06:57:53" itemprop="dateModified" datetime="2021-01-19T06:57:53+08:00">2021-01-19</time>
+                <time title="修改时间：2021-01-20 23:50:47" itemprop="dateModified" datetime="2021-01-20T23:50:47+08:00">2021-01-20</time>
               </span>
 
           
@@ -243,14 +243,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>7k</span>
+              <span>8.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>7 分钟</span>
             </span>
             <div class="post-description">自建一个跨平台的密码管理工具</div>
 
@@ -270,7 +270,7 @@
 <h3 id="部署bitwarden"><a href="#部署bitwarden" class="headerlink" title="部署bitwarden"></a>部署bitwarden</h3><h4 id="开始前的准备"><a href="#开始前的准备" class="headerlink" title="开始前的准备"></a>开始前的准备</h4><ul>
 <li><p>首先需要一台vps,512m内存的也能完美运行.</p>
 </li>
-<li><p>有个域名,没有的话可以去<a href="namesilo.com">namesiko</a>购买一个,支持支付宝pp微信.</p>
+<li><p>有个域名,没有的话可以去<a href="https://namesilo.com" target="_blank" rel="noopener">namesilo</a>购买一个,支持支付宝pp微信.</p>
 </li>
 <li><p>安装docker,可以参考<a href="https://www.runoob.com/docker/ubuntu-docker-install.html" target="_blank" rel="noopener">菜鸟教程</a>,网站提供了比较全面的发行版安装步骤.</p>
 </li>
@@ -531,23 +531,46 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mv /backup/backup.sqlite3 /bw-data/db.sqlite3 /bw-data/db.sqlite3</span><br><span class="line"></span><br><span class="line">docker run -d --name bitwarden \</span><br><span class="line">-v /bw-data/:/data/ \</span><br><span class="line">-p 8880:80 \</span><br><span class="line">-e SIGNUPS_ALLOWED=<span class="literal">false</span> \</span><br><span class="line">bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
 
 <p>然后刷新浏览器,用以前的帐号密码登陆就可以啦</p>
-<h3 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h3><ul>
-<li>使用其他数据库</li>
-</ul>
-<p>bitwardenrs项目是由sqlite3来完成存储的,当然了也可以指定<code>Mysql``Postgresql</code>数据库,不过这需要自行构建镜像.参考<a href="https://github.com/dani-garcia/bitwarden_rs/wiki/Building-your-own-docker-image" target="_blank" rel="noopener">github_wiki</a></p>
+<h3 id="可选项"><a href="#可选项" class="headerlink" title="可选项"></a>可选项</h3><h4 id="使用其他数据库"><a href="#使用其他数据库" class="headerlink" title="使用其他数据库"></a>使用其他数据库</h4><p>bitwardenrs项目是由sqlite3来完成存储的,当然了也可以指定<code>Mysql</code> <code>Postgresql</code>数据库,不过这需要自行构建镜像.参考<a href="https://github.com/dani-garcia/bitwarden_rs/wiki/Building-your-own-docker-image" target="_blank" rel="noopener">github_wiki</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Build the docker image:</span></span><br><span class="line">docker build -t bitwarden_rs --build-arg DB=mysql .</span><br><span class="line"></span><br><span class="line"><span class="comment"># Build the docker image:</span></span><br><span class="line">docker build -t bitwarden_rs --build-arg DB=postgresql .</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>开启SMTP</li>
+<h4 id="开启SMTP"><a href="#开启SMTP" class="headerlink" title="开启SMTP"></a>开启SMTP</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name bitwarden \</span><br><span class="line">  -e SMTP_HOST=&lt;smtp.domain.tld&gt; \</span><br><span class="line">  -e SMTP_FROM=&lt;bitwarden@domain.tld&gt; \</span><br><span class="line">  -e SMTP_PORT=587 \</span><br><span class="line">  -e SMTP_SSL=<span class="literal">true</span> \</span><br><span class="line">  -e SMTP_USERNAME=&lt;username&gt; \</span><br><span class="line">  -e SMTP_PASSWORD=&lt;password&gt; \</span><br><span class="line">  -v /bw-data/:/data/ \</span><br><span class="line">  -p 80:80 \</span><br><span class="line">  bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
+
+<h4 id="自签证书"><a href="#自签证书" class="headerlink" title="自签证书"></a>自签证书</h4><p>如果在局域网搭建,可以自签证书,然后导入到浏览器信任该证书</p>
+<h5 id="签发证书"><a href="#签发证书" class="headerlink" title="签发证书"></a>签发证书</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa -des3 -out server.key 2048	#生成RSA私钥</span><br><span class="line">openssl rsa -in server.key -out server_nopass.key		#生成不需要输入密码的文件</span><br><span class="line">openssl req -new -key server.key -out server.csr	#生成证书请求文件</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>#接下来会让你输入参数:</p>
+<p>Enter pass phrase for domain.key: # 之前设置的密码<br>Country Name (2 letter code) [XX]:CN    # 国家<br>State or Province Name (full name) []:BJ # 地区或省份<br>Locality Name (eg, city) [Default City]:BJ # 地区局部名<br>Organization Name (eg, company) [Default Company Ltd]:WIND # 机构名称<br>Organizational Unit Name (eg, section) []:WIND  # 组织单位名称<br>Common Name (eg, your name or your server’s hostname) []: # 网站域名<br>Email Address []:<a href="mailto:xx@xx.com">xx@xx.com</a>   # 邮箱<br>A challenge password []:# 私钥保护密码最好和上面的密码相同<br>An optional company name []:# 一个可选公司名称,可直接回车</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">使用密钥key和证书申请文件csr对证书签名</span></span><br><span class="line">openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt</span><br></pre></td></tr></table></figure>
+
+<h5 id="生成pfx文件"><a href="#生成pfx文件" class="headerlink" title="生成pfx文件"></a>生成pfx文件</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 将私钥导出为pfx文件,导入浏览器</span></span><br><span class="line">openssl pkcs12 -export -inkey server.key -in server.crt -out server.pfx	</span><br><span class="line"><span class="meta">#</span><span class="bash">会出现以下页面,输入对应的参数</span></span><br><span class="line">Enter pass phrase for server.key:	#第一步生成server.key的时候输入的密码</span><br><span class="line">Enter Export Password:	#自定义导入证书的密码</span><br><span class="line">Verifying - Enter Export Password:	#和上步一样</span><br></pre></td></tr></table></figure>
+
+<h5 id="导入浏览器"><a href="#导入浏览器" class="headerlink" title="导入浏览器"></a>导入浏览器</h5><ul>
+<li>chrome<ul>
+<li><code>设置</code> &gt; <code>隐私设置和安全性</code> &gt; <code>安全</code> &gt; <code>管理证书</code> &gt; <code>导入</code></li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name bitwarden \</span><br><span class="line">  -e SMTP_HOST=&lt;smtp.domain.tld&gt; \</span><br><span class="line">  -e SMTP_FROM=&lt;bitwarden@domain.tld&gt; \</span><br><span class="line">  -e SMTP_PORT=587 \</span><br><span class="line">  -e SMTP_SSL=<span class="literal">true</span> \</span><br><span class="line">  -e SMTP_USERNAME=&lt;username&gt; \</span><br><span class="line">  -e SMTP_PASSWORD=&lt;password&gt; \</span><br><span class="line">  -v /bw-data/:/data/ \</span><br><span class="line">  -p 80:80 \</span><br><span class="line">  bitwardenrs/server:latest</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>个人认为,虽然没有绝对的安全,密码交给闭源的厂商来管理总觉得很奇怪,还是放在自己手里比较好.当然,前提是需要自己来维护这些工具和项目.如果上手和维护起来感觉吃力,不如尝试bitwarden的免费版产品,功能也很齐全.直接在<a href="https://bitwarden.com/" target="_blank" rel="noopener">bitwarden</a>官网注册就可以.</p>
+</li>
+</ul>
+<p>导入刚才生成的pfx文件即可.</p>
+<ul>
+<li>firefox<ul>
+<li><code>preference</code> &gt; <code>Privacy &amp; Security</code> &gt; <code>Certificates</code> &gt; <code>View Certificates</code> &gt; <code>Your Ceritificates</code> &gt; <code>Import</code> </li>
+</ul>
+</li>
+</ul>
+<p>导入pfx文件.</p>
+<p>自签的证书只能在<strong>浏览器扩展</strong>和<strong>网页端</strong>使用,<strong>android App</strong>是无法使用的,会报<code>Exception message:java.security.cert.CertPathValidatorException:Trust anchor for certification path not found</code>.</p>
+<p>这个暂时无法解决.</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>虽然没有绝对的安全,但是密码交给闭源的厂商来管理总觉得很奇怪,还是放在自己手里比较好.</p>
+<p>当然,前提是需要自己来维护这些工具和项目.</p>
+<p>如果上手和维护起来感觉吃力,可以尝试bitwarden的免费版产品,功能也很齐全.</p>
+<p>直接在<a href="https://bitwarden.com/" target="_blank" rel="noopener">bitwarden</a>官网注册就可以.</p>
 <p>bitwarden的功能还是比较齐全的,app端支持指纹解锁,pin解锁和自动填充.在浏览器扩展上表现也很优秀,注册帐号的时候也会有提示自动保存到bitwarden.最重要的还是开源的.</p>
-<p>互联网的环境很复杂,看不见的地方时时刻刻都有扫描爆破ssh端口的恶意脚本;商业公司的产品时时刻刻想获取你的位置,通讯录,通话记录,浏览记录,粘贴板…瞎🐔🎱申请权限.</p>
-<p>十分感谢开源的厂商和参与开源项目的开发者,把自己的成果拿出来供大家使用,这大概就是互联网中<strong>互联</strong>的一种体现吧.</p>
+<p>互联网的环境很复杂,看不见的地方时时刻刻都有扫描爆破ssh端口的恶意脚本;</p>
+<p>商业公司的产品时时刻刻想获取你的位置,通讯录,通话记录,浏览记录,粘贴板…瞎🐔8️⃣申请权限.</p>
+<p>十分感谢开源的厂商和参与开源项目的开发者,把自己的成果和源代码拿出来供大家使用和参考,这大概就是互联网中<strong>互联</strong>的一种体现吧.</p>
 <p>参考<a href="https://wzfou.com/bitwarden-rs/" target="_blank" rel="noopener">挖站否</a> ,更详细的文档请参考<a href="https://github.com/dani-garcia/bitwarden_rs/wiki/Starting-a-Container" target="_blank" rel="noopener">github_wiki</a></p>
 <hr>
 <p>以上</p>
@@ -653,7 +676,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么用密码管理工具"><span class="nav-number">1.1.</span> <span class="nav-text">为什么用密码管理工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于bitwarden"><span class="nav-number">1.2.</span> <span class="nav-text">关于bitwarden</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署bitwarden"><span class="nav-number">2.</span> <span class="nav-text">部署bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开始前的准备"><span class="nav-number">2.1.</span> <span class="nav-text">开始前的准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取镜像"><span class="nav-number">2.2.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动bitwarden"><span class="nav-number">2.3.</span> <span class="nav-text">启动bitwarden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置nginx"><span class="nav-number">2.4.</span> <span class="nav-text">配置nginx</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置bitwarden"><span class="nav-number">3.</span> <span class="nav-text">配置bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭注册"><span class="nav-number">3.1.</span> <span class="nav-text">关闭注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入数据"><span class="nav-number">3.2.</span> <span class="nav-text">导入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两步登陆"><span class="nav-number">3.3.</span> <span class="nav-text">两步登陆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户端体验"><span class="nav-number">3.4.</span> <span class="nav-text">客户端体验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份和恢复数据"><span class="nav-number">4.</span> <span class="nav-text">备份和恢复数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#备份数据"><span class="nav-number">4.1.</span> <span class="nav-text">备份数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复数据"><span class="nav-number">4.2.</span> <span class="nav-text">恢复数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选项"><span class="nav-number">5.</span> <span class="nav-text">可选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-number">6.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么用密码管理工具"><span class="nav-number">1.1.</span> <span class="nav-text">为什么用密码管理工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于bitwarden"><span class="nav-number">1.2.</span> <span class="nav-text">关于bitwarden</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署bitwarden"><span class="nav-number">2.</span> <span class="nav-text">部署bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#开始前的准备"><span class="nav-number">2.1.</span> <span class="nav-text">开始前的准备</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取镜像"><span class="nav-number">2.2.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动bitwarden"><span class="nav-number">2.3.</span> <span class="nav-text">启动bitwarden</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置nginx"><span class="nav-number">2.4.</span> <span class="nav-text">配置nginx</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置bitwarden"><span class="nav-number">3.</span> <span class="nav-text">配置bitwarden</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关闭注册"><span class="nav-number">3.1.</span> <span class="nav-text">关闭注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入数据"><span class="nav-number">3.2.</span> <span class="nav-text">导入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两步登陆"><span class="nav-number">3.3.</span> <span class="nav-text">两步登陆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户端体验"><span class="nav-number">3.4.</span> <span class="nav-text">客户端体验</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份和恢复数据"><span class="nav-number">4.</span> <span class="nav-text">备份和恢复数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#备份数据"><span class="nav-number">4.1.</span> <span class="nav-text">备份数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复数据"><span class="nav-number">4.2.</span> <span class="nav-text">恢复数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可选项"><span class="nav-number">5.</span> <span class="nav-text">可选项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用其他数据库"><span class="nav-number">5.1.</span> <span class="nav-text">使用其他数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启SMTP"><span class="nav-number">5.2.</span> <span class="nav-text">开启SMTP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自签证书"><span class="nav-number">5.3.</span> <span class="nav-text">自签证书</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#签发证书"><span class="nav-number">5.3.1.</span> <span class="nav-text">签发证书</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#生成pfx文件"><span class="nav-number">5.3.2.</span> <span class="nav-text">生成pfx文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入浏览器"><span class="nav-number">5.3.3.</span> <span class="nav-text">导入浏览器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-number">6.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -722,12 +745,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">40k</span>
+    <span title="站点总字数">42k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">37 分钟</span>
+    <span title="站点阅读时长">38 分钟</span>
 </div>
 
         
