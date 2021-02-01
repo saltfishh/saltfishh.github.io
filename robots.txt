@@ -11,6 +11,6 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox/
 
-Sitemap: https://blog.charons.work/sitemap.xml
-Sitemap: https://blog.charons.work/baidusitemap.xml
+Sitemap: https://blog.hearthewind.top/sitemap.xml
+Sitemap: https://blog.hearthewind.top/baidusitemap.xml
 
