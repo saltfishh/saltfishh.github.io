@@ -40,22 +40,6 @@
 
   <title>归档 | 且听风吟</title>
   
-    <script>
-      function sendPageView() {
-        if (CONFIG.hostname !== location.hostname) return;
-        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
-        localStorage.setItem('uid', uid);
-        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
-          v  : 1,
-          tid: 'G-6XP0BGN4RS',
-          cid: uid,
-          t  : 'pageview',
-          dp : encodeURIComponent(location.pathname)
-        }));
-      }
-      document.addEventListener('pjax:complete', sendPageView);
-      sendPageView();
-    </script>
 
 
   <script>
@@ -187,13 +171,33 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 12 篇日志。 继续努力。</span>
+        <span class="collection-header">嗯..! 目前共计 13 篇日志。 继续努力。</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2021</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2021-02-01T14:28:48+08:00"
+              content="2021-02-01">
+          02-01
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/posts/bdfd47f0-6456-11eb-98f7-b18e4a437930/" itemprop="url">
+            <span itemprop="name">申请一个自定义域名的邮箱</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -378,26 +382,6 @@
     </header>
   </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-06-22T10:37:42+08:00"
-              content="2020-06-22">
-          06-22
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/posts/db113ab0-4e36-11eb-bbe3-c117a7825fa2/" itemprop="url">
-            <span itemprop="name">netctl静态ip</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
 
     </div>
   </div>
@@ -477,14 +461,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -528,12 +512,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">44k</span>
+    <span title="站点总字数">46k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">40 分钟</span>
+    <span title="站点阅读时长">42 分钟</span>
 </div>
 
         
